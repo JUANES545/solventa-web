@@ -81,7 +81,7 @@ import { ErrorStateComponent, LoadingStateComponent } from '../../shared/ui.comp
           <path class="route-flight-line" d="M28 114C102 8 252 8 332 114" />
           <circle cx="28" cy="114" r="7" />
           <circle cx="332" cy="114" r="7" />
-          <g class="route-plane" transform="translate(180 38) rotate(20)">
+          <g class="route-plane" transform="translate(180 35) rotate(20)">
             <path d="m-11 5 22-10-6 13-5-2-4 5-2-7z" />
           </g>
         </svg>

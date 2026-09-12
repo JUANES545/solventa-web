@@ -46,7 +46,6 @@ export class AmbientBackgroundComponent implements AfterViewInit, OnDestroy {
   private renderer?: THREE.WebGLRenderer;
   private flowMaterial?: THREE.ShaderMaterial;
   private orbMaterial?: THREE.ShaderMaterial;
-  private wireMaterial?: THREE.MeshBasicMaterial;
   private particleMaterial?: THREE.PointsMaterial;
   private frameId?: number;
   private darkMode = false;
@@ -150,7 +149,7 @@ export class AmbientBackgroundComponent implements AfterViewInit, OnDestroy {
     this.renderer = new THREE.WebGLRenderer({
       canvas: this.canvasRef.nativeElement,
       alpha: true,
-      antialias: false,
+      antialias: true,
       powerPreference: 'low-power',
     });
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
@@ -264,18 +263,10 @@ export class AmbientBackgroundComponent implements AfterViewInit, OnDestroy {
       `,
       transparent: true,
       depthWrite: false,
-      side: THREE.DoubleSide,
-    });
-    this.wireMaterial = new THREE.MeshBasicMaterial({
-      color: 0x1d7698,
-      transparent: true,
-      opacity: 0.065,
-      wireframe: true,
-      depthWrite: false,
+      side: THREE.FrontSide,
     });
 
-    const sphereGeometry = new THREE.IcosahedronGeometry(1, 2);
-    const ringGeometry = new THREE.TorusGeometry(1.13, 0.008, 4, 72);
+    const sphereGeometry = new THREE.SphereGeometry(1, 48, 32);
     const orbSpecs = [
       [-0.84, 0.72, -1.3, 0.82, 0.3],
       [0.86, 0.56, -2.6, 1.22, 1.8],
@@ -285,13 +276,10 @@ export class AmbientBackgroundComponent implements AfterViewInit, OnDestroy {
       [1.08, -0.04, -3.5, 0.44, 2.5],
     ] as const;
 
-    orbSpecs.forEach(([x, y, depth, scale, phase], index) => {
+    orbSpecs.forEach(([x, y, depth, scale, phase]) => {
       const group = new THREE.Group();
       const surface = new THREE.Mesh(sphereGeometry, this.orbMaterial!);
-      const wire = new THREE.Mesh(sphereGeometry, this.wireMaterial!);
-      const ring = new THREE.Mesh(ringGeometry, this.wireMaterial!);
-      ring.rotation.set(0.62 + index * 0.17, index * 0.41, index * 0.12);
-      group.add(surface, wire, ring);
+      group.add(surface);
       group.scale.setScalar(scale);
       this.orbGroup.add(group);
       this.orbs.push({
@@ -329,7 +317,7 @@ export class AmbientBackgroundComponent implements AfterViewInit, OnDestroy {
   }
 
   private applyTheme(renderAfterUpdate: boolean): void {
-    if (!this.flowMaterial || !this.orbMaterial || !this.wireMaterial || !this.particleMaterial) {
+    if (!this.flowMaterial || !this.orbMaterial || !this.particleMaterial) {
       return;
     }
 
@@ -340,7 +328,6 @@ export class AmbientBackgroundComponent implements AfterViewInit, OnDestroy {
           particle: '#79eaff',
           flowOpacity: 0.82,
           orbOpacity: 0.12,
-          wireOpacity: 0.095,
           particleOpacity: 0.24,
         }
       : {
@@ -349,7 +336,6 @@ export class AmbientBackgroundComponent implements AfterViewInit, OnDestroy {
           particle: '#22718e',
           flowOpacity: 0.72,
           orbOpacity: 0.072,
-          wireOpacity: 0.066,
           particleOpacity: 0.16,
         };
 
@@ -359,8 +345,6 @@ export class AmbientBackgroundComponent implements AfterViewInit, OnDestroy {
     this.flowMaterial.uniforms['uOpacity'].value = palette.flowOpacity;
     this.orbMaterial.uniforms['uColor'].value.set(palette.orb);
     this.orbMaterial.uniforms['uOpacity'].value = palette.orbOpacity;
-    this.wireMaterial.color.set(palette.orb);
-    this.wireMaterial.opacity = palette.wireOpacity;
     this.particleMaterial.color.set(palette.particle);
     this.particleMaterial.opacity = palette.particleOpacity;
 
