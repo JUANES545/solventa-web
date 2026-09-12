@@ -81,6 +81,7 @@
   box-sizing: border-box;
 }
 html {
+  font-size: 110%;
   min-width: 320px;
   scroll-behavior: smooth;
 }
@@ -1976,6 +1977,15 @@ dd {
   .trust-section {
     width: min(100% - 28px, 1180px);
   }
+  .panel-heading {
+    flex-wrap: wrap;
+  }
+  .compact-item {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+  .compact-item .status {
+    grid-column: 2;
+  }
   .public-header .button {
     display: none;
   }
@@ -2018,7 +2028,7 @@ dd {
   .form-grid,
   .file-grid,
   .scenario-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
   .span-two {
     grid-column: auto;
