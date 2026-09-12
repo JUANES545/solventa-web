@@ -192,7 +192,7 @@ app-theme-toggle {
   position: fixed;
   z-index: 1100;
   top: 14px;
-  left: 14px;
+  right: 14px;
 }
 .global-theme-toggle {
   width: 48px;
@@ -250,9 +250,9 @@ app-theme-toggle {
 .skip-link {
   position: fixed;
   z-index: 1000;
-  top: 70px;
+  top: 12px;
   left: 12px;
-  transform: translateY(-260%);
+  transform: translateY(-160%);
   padding: 0.7rem 1rem;
   border-radius: 8px;
   background: var(--color-surface);
@@ -1783,9 +1783,6 @@ dd {
   justify-content: space-between;
   padding: 0 0.45rem 1.2rem;
 }
-.sidebar-header .brand {
-  margin-left: 3.25rem;
-}
 .main-nav,
 .sidebar-footer {
   display: grid;
@@ -1830,7 +1827,7 @@ dd {
   position: sticky;
   top: 0;
   z-index: 15;
-  padding: 0 1.5rem;
+  padding: 0 4.75rem 0 1.5rem;
   border-bottom: 1px solid var(--color-border-soft);
   background: color-mix(in srgb, var(--color-background) 93%, transparent);
   backdrop-filter: blur(12px);
@@ -1908,9 +1905,6 @@ dd {
   .mobile-only {
     display: inline-grid;
     place-items: center;
-  }
-  .app-header {
-    padding-left: 4.75rem;
   }
   .hero {
     grid-template-columns: 1fr;
@@ -2048,12 +2042,12 @@ dd {
     display: none;
   }
   .app-header {
-    padding: 0 1rem 0 4.75rem;
+    padding: 0 4.75rem 0 1rem;
   }
 }
 
 @media (max-width: 1320px) {
-  .public-header .brand {
-    margin-left: 3.45rem;
+  .public-header {
+    padding-right: 4rem;
   }
 }
