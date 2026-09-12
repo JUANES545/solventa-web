@@ -3,15 +3,6 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TranslocoPipe } from '@jsverse/transloco';
 
 @Component({
-  selector: 'app-simulation-notice',
-  imports: [TranslocoPipe],
-  template: `<div class="simulation-notice" role="note">
-    <span aria-hidden="true">ⓘ</span><span>{{ 'common.simulated' | transloco }}</span>
-  </div>`,
-})
-export class SimulationNoticeComponent {}
-
-@Component({
   selector: 'app-loading-state',
   imports: [MatProgressSpinnerModule, TranslocoPipe],
   template: `<div class="state-card" role="status">

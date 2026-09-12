@@ -3,11 +3,10 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { AppStore } from '../../core/app-store.service';
-import { SimulationNoticeComponent } from '../../shared/ui.components';
 
 @Component({
   selector: 'app-consent-page',
-  imports: [ReactiveFormsModule, RouterLink, TranslocoPipe, SimulationNoticeComponent],
+  imports: [ReactiveFormsModule, RouterLink, TranslocoPipe],
   template: `<section class="auth-page">
     <div class="auth-panel wide">
       <a class="back-link" routerLink="/register">← {{ 'common.back' | transloco }}</a>
@@ -37,7 +36,6 @@ import { SimulationNoticeComponent } from '../../shared/ui.components';
           {{ (loading() ? 'common.loading' : 'common.continue') | transloco }}
         </button>
       </form>
-      <app-simulation-notice />
     </div>
   </section>`,
 })
@@ -71,7 +69,7 @@ export class ConsentPage {
 
 @Component({
   selector: 'app-kyc-page',
-  imports: [TranslocoPipe, RouterLink, SimulationNoticeComponent],
+  imports: [TranslocoPipe, RouterLink],
   template: `<section class="auth-page">
     <div class="auth-panel wide">
       <a class="back-link" routerLink="/consent">← {{ 'common.back' | transloco }}</a>
@@ -119,7 +117,6 @@ export class ConsentPage {
           {{ (loading() ? 'kyc.processing' : 'kyc.action') | transloco }}
         </button>
       }
-      <app-simulation-notice />
     </div>
   </section>`,
 })

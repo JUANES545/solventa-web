@@ -3,11 +3,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { AppStore } from '../../core/app-store.service';
 import { CopPipe, LocalDatePipe } from '../../shared/format.pipes';
-import {
-  ErrorStateComponent,
-  LoadingStateComponent,
-  SimulationNoticeComponent,
-} from '../../shared/ui.components';
+import { ErrorStateComponent, LoadingStateComponent } from '../../shared/ui.components';
 
 @Component({
   selector: 'app-policies-page',
@@ -93,14 +89,7 @@ export class PoliciesPage implements OnInit {
 
 @Component({
   selector: 'app-policy-detail-page',
-  imports: [
-    RouterLink,
-    TranslocoPipe,
-    CopPipe,
-    LocalDatePipe,
-    LoadingStateComponent,
-    SimulationNoticeComponent,
-  ],
+  imports: [RouterLink, TranslocoPipe, CopPipe, LocalDatePipe, LoadingStateComponent],
   template: `<section class="page-stack narrow-content">
     <a class="back-link" routerLink="/app/policies">← {{ 'common.back' | transloco }}</a>
     @if (loading()) {
@@ -148,7 +137,6 @@ export class PoliciesPage implements OnInit {
           'policies.newClaim' | transloco
         }}</a>
       }
-      <app-simulation-notice />
     }
   </section>`,
 })

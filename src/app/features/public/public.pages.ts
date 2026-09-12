@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { SimulationNoticeComponent } from '../../shared/ui.components';
 
 @Component({
   selector: 'app-landing-page',
-  imports: [RouterLink, TranslocoPipe, SimulationNoticeComponent],
+  imports: [RouterLink, TranslocoPipe],
   template: `
     <section class="hero page-section">
       <div class="hero-copy">
@@ -18,7 +17,6 @@ import { SimulationNoticeComponent } from '../../shared/ui.components';
             'landing.secondary' | transloco
           }}</a>
         </div>
-        <app-simulation-notice />
       </div>
       <div class="hero-visual" aria-hidden="true">
         <div class="visual-card visual-card-main">

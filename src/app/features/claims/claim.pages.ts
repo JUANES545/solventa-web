@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { AppStore } from '../../core/app-store.service';
 import { LocalDatePipe } from '../../shared/format.pipes';
-import { LoadingStateComponent, SimulationNoticeComponent } from '../../shared/ui.components';
+import { LoadingStateComponent } from '../../shared/ui.components';
 
 @Component({
   selector: 'app-claims-page',
@@ -56,7 +56,7 @@ export class ClaimsPage implements OnInit {
 
 @Component({
   selector: 'app-new-claim-page',
-  imports: [ReactiveFormsModule, RouterLink, TranslocoPipe, SimulationNoticeComponent],
+  imports: [ReactiveFormsModule, RouterLink, TranslocoPipe],
   template: `<section class="page-stack form-page">
     <div class="page-heading">
       <span class="eyebrow">{{ 'claims.new' | transloco }}</span>
@@ -138,7 +138,6 @@ export class ClaimsPage implements OnInit {
         </button>
       </div>
     </form>
-    <app-simulation-notice />
   </section>`,
 })
 export class NewClaimPage implements OnInit {
@@ -197,13 +196,7 @@ export class NewClaimPage implements OnInit {
 
 @Component({
   selector: 'app-claim-detail-page',
-  imports: [
-    RouterLink,
-    TranslocoPipe,
-    LocalDatePipe,
-    LoadingStateComponent,
-    SimulationNoticeComponent,
-  ],
+  imports: [RouterLink, TranslocoPipe, LocalDatePipe, LoadingStateComponent],
   template: `<section class="page-stack narrow-content">
     <a class="back-link" routerLink="/app/claims">← {{ 'common.back' | transloco }}</a>
     @if (loading()) {
@@ -258,7 +251,6 @@ export class NewClaimPage implements OnInit {
           </ol>
         </section>
       </div>
-      <app-simulation-notice />
     }
   </section>`,
 })
