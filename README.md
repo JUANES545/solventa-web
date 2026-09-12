@@ -32,10 +32,13 @@ Open `http://localhost:4200`. The development scenario panel is available at `/a
 
 ```bash
 pnpm test:ci
+pnpm audit:a11y
 pnpm build
 pnpm build:dev
 pnpm format:check
 ```
+
+Run `pnpm audit:a11y` while the development server is available at `http://localhost:4200`. The audit checks the main public and authenticated routes in both light and dark themes with WCAG A/AA rules.
 
 ## Project notes
 
