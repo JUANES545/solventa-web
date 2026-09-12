@@ -3,13 +3,16 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { AppStore } from '../../core/app-store.service';
+import { SvgIconComponent } from '../../shared/svg-icon.component';
 
 @Component({
   selector: 'app-consent-page',
-  imports: [ReactiveFormsModule, RouterLink, TranslocoPipe],
+  imports: [ReactiveFormsModule, RouterLink, TranslocoPipe, SvgIconComponent],
   template: `<section class="auth-page">
     <div class="auth-panel wide">
-      <a class="back-link" routerLink="/register">← {{ 'common.back' | transloco }}</a>
+      <a class="back-link" routerLink="/register"
+        ><app-icon name="arrow-left" [size]="17" />{{ 'common.back' | transloco }}</a
+      >
       <div class="step-label">1 / 2</div>
       <h1>{{ 'register.consentTitle' | transloco }}</h1>
       <p>{{ 'register.consentBody' | transloco }}</p>
@@ -69,13 +72,15 @@ export class ConsentPage {
 
 @Component({
   selector: 'app-kyc-page',
-  imports: [TranslocoPipe, RouterLink],
+  imports: [TranslocoPipe, RouterLink, SvgIconComponent],
   template: `<section class="auth-page">
     <div class="auth-panel wide">
-      <a class="back-link" routerLink="/consent">← {{ 'common.back' | transloco }}</a>
+      <a class="back-link" routerLink="/consent"
+        ><app-icon name="arrow-left" [size]="17" />{{ 'common.back' | transloco }}</a
+      >
       <div class="step-label">2 / 2</div>
       @if (approved()) {
-        <div class="success-illustration" aria-hidden="true">✓</div>
+        <div class="success-illustration"><app-icon name="check" [size]="34" /></div>
         <h1>{{ 'kyc.approvedTitle' | transloco }}</h1>
         <p>{{ 'kyc.approvedBody' | transloco }}</p>
         <button class="button primary full" type="button" (click)="finish()">
@@ -86,7 +91,8 @@ export class ConsentPage {
         <p>{{ 'kyc.body' | transloco }}</p>
         <div class="file-grid">
           <label class="file-picker"
-            ><span>▤</span><strong>{{ 'kyc.document' | transloco }}</strong
+            ><span><app-icon name="file" [size]="31" /></span
+            ><strong>{{ 'kyc.document' | transloco }}</strong
             ><input
               type="file"
               accept="image/png,image/jpeg,application/pdf"
@@ -96,7 +102,8 @@ export class ConsentPage {
               <small>{{ 'kyc.selected' | transloco }}: {{ documentName() }}</small>
             }</label
           ><label class="file-picker"
-            ><span>◉</span><strong>{{ 'kyc.selfie' | transloco }}</strong
+            ><span><app-icon name="user" [size]="31" /></span
+            ><strong>{{ 'kyc.selfie' | transloco }}</strong
             ><input
               type="file"
               accept="image/png,image/jpeg"

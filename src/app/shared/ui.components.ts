@@ -1,6 +1,7 @@
 import { Component, input, output } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TranslocoPipe } from '@jsverse/transloco';
+import { SvgIconComponent } from './svg-icon.component';
 
 @Component({
   selector: 'app-loading-state',
@@ -16,9 +17,9 @@ export class LoadingStateComponent {
 
 @Component({
   selector: 'app-error-state',
-  imports: [TranslocoPipe],
+  imports: [TranslocoPipe, SvgIconComponent],
   template: `<div class="state-card error-card" role="alert">
-    <div class="state-icon" aria-hidden="true">!</div>
+    <div class="state-icon"><app-icon name="error" [size]="30" /></div>
     <p>{{ messageKey() | transloco }}</p>
     <button class="button secondary" type="button" (click)="retry.emit()">
       {{ 'common.retry' | transloco }}

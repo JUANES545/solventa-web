@@ -3,6 +3,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { AppStore } from '../../core/app-store.service';
 import { CopPipe, LocalDatePipe } from '../../shared/format.pipes';
+import { IconName, SvgIconComponent } from '../../shared/svg-icon.component';
 import { ErrorStateComponent, LoadingStateComponent } from '../../shared/ui.components';
 
 @Component({
@@ -14,6 +15,7 @@ import { ErrorStateComponent, LoadingStateComponent } from '../../shared/ui.comp
     LocalDatePipe,
     LoadingStateComponent,
     ErrorStateComponent,
+    SvgIconComponent,
   ],
   template: `<section class="page-stack">
     <div class="page-heading split">
@@ -30,7 +32,7 @@ import { ErrorStateComponent, LoadingStateComponent } from '../../shared/ui.comp
       <app-error-state (retry)="load()" />
     } @else if (!store.policies().length) {
       <div class="empty-state">
-        <span aria-hidden="true">▣</span>
+        <span><app-icon name="policy" [size]="30" /></span>
         <p>{{ 'policies.empty' | transloco }}</p>
         <a class="button primary" routerLink="/app/quote">{{ 'dashboard.newQuote' | transloco }}</a>
       </div>
@@ -39,9 +41,8 @@ import { ErrorStateComponent, LoadingStateComponent } from '../../shared/ui.comp
         @for (policy of store.policies(); track policy.id) {
           <article class="entity-card">
             <div class="entity-card-header">
-              <span class="product-icon" aria-hidden="true">{{
-                policy.product === 'travel' ? '✈' : policy.product === 'life' ? '♥' : '▣'
-              }}</span
+              <span class="product-icon"
+                ><app-icon [name]="productIcons[policy.product]" [size]="21" /></span
               ><span class="status" [class]="'status ' + policy.status">{{
                 'policies.' + policy.status | transloco
               }}</span>
@@ -58,9 +59,9 @@ import { ErrorStateComponent, LoadingStateComponent } from '../../shared/ui.comp
                 <dd>{{ policy.validUntil | localDate }}</dd>
               </div>
             </dl>
-            <a class="button secondary full" [routerLink]="['/app/policies', policy.id]">{{
-              'common.view' | transloco
-            }}</a>
+            <a class="button secondary full" [routerLink]="['/app/policies', policy.id]"
+              >{{ 'common.view' | transloco }}<app-icon name="arrow-right" [size]="17"
+            /></a>
           </article>
         }
       </div>
@@ -71,6 +72,12 @@ export class PoliciesPage implements OnInit {
   readonly store = inject(AppStore);
   readonly loading = signal(true);
   readonly error = signal(false);
+  readonly productIcons: Record<'travel' | 'life' | 'device' | 'parametric', IconName> = {
+    travel: 'plane',
+    life: 'heart',
+    device: 'device',
+    parametric: 'shield',
+  };
   ngOnInit(): void {
     this.load();
   }
@@ -89,9 +96,18 @@ export class PoliciesPage implements OnInit {
 
 @Component({
   selector: 'app-policy-detail-page',
-  imports: [RouterLink, TranslocoPipe, CopPipe, LocalDatePipe, LoadingStateComponent],
+  imports: [
+    RouterLink,
+    TranslocoPipe,
+    CopPipe,
+    LocalDatePipe,
+    LoadingStateComponent,
+    SvgIconComponent,
+  ],
   template: `<section class="page-stack narrow-content">
-    <a class="back-link" routerLink="/app/policies">← {{ 'common.back' | transloco }}</a>
+    <a class="back-link" routerLink="/app/policies"
+      ><app-icon name="arrow-left" [size]="17" />{{ 'common.back' | transloco }}</a
+    >
     @if (loading()) {
       <app-loading-state />
     } @else if (!policy()) {
@@ -117,7 +133,7 @@ export class PoliciesPage implements OnInit {
           <h2>{{ 'policies.coverage' | transloco }}</h2>
           <ul class="coverage-list">
             @for (key of policy()!.coverageKeys; track key) {
-              <li><span aria-hidden="true">✓</span>{{ 'coverage.' + key | transloco }}</li>
+              <li><app-icon name="check" [size]="18" />{{ 'coverage.' + key | transloco }}</li>
             }
           </ul>
         </section>
@@ -125,7 +141,7 @@ export class PoliciesPage implements OnInit {
           <h2>{{ 'policies.validity' | transloco }}</h2>
           <p>{{ policy()!.validFrom | localDate }} — {{ policy()!.validUntil | localDate }}</p>
           <button class="button secondary full" type="button" (click)="download()">
-            {{ 'policies.download' | transloco }}
+            <app-icon name="file" [size]="18" />{{ 'policies.download' | transloco }}
           </button>
           @if (downloaded()) {
             <p class="success-text" role="status">{{ 'policies.downloaded' | transloco }}</p>
@@ -133,9 +149,9 @@ export class PoliciesPage implements OnInit {
         </section>
       </div>
       @if (policy()!.product === 'travel') {
-        <a class="button conversion" routerLink="/app/claims/new">{{
-          'policies.newClaim' | transloco
-        }}</a>
+        <a class="button conversion" routerLink="/app/claims/new"
+          ><app-icon name="claim" [size]="18" />{{ 'policies.newClaim' | transloco }}</a
+        >
       }
     }
   </section>`,
