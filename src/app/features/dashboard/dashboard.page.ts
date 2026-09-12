@@ -3,11 +3,7 @@ import { RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { AppStore } from '../../core/app-store.service';
 import { CopPipe, LocalDatePipe } from '../../shared/format.pipes';
-import {
-  ErrorStateComponent,
-  LoadingStateComponent,
-  SimulationNoticeComponent,
-} from '../../shared/ui.components';
+import { ErrorStateComponent, LoadingStateComponent } from '../../shared/ui.components';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -18,7 +14,6 @@ import {
     LocalDatePipe,
     LoadingStateComponent,
     ErrorStateComponent,
-    SimulationNoticeComponent,
   ],
   template: `
     <section class="page-stack">
@@ -36,7 +31,6 @@ import {
           >
         </div>
       </div>
-      <app-simulation-notice />
       @if (loading()) {
         <app-loading-state />
       } @else if (error()) {

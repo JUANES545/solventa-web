@@ -3,11 +3,10 @@ import { ReactiveFormsModule, Validators, FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { AppStore } from '../../core/app-store.service';
-import { SimulationNoticeComponent } from '../../shared/ui.components';
 
 @Component({
   selector: 'app-login-page',
-  imports: [ReactiveFormsModule, RouterLink, TranslocoPipe, SimulationNoticeComponent],
+  imports: [ReactiveFormsModule, RouterLink, TranslocoPipe],
   template: `
     <section class="auth-page">
       <div class="auth-panel">
@@ -60,7 +59,6 @@ import { SimulationNoticeComponent } from '../../shared/ui.components';
           <a routerLink="/recover-password">{{ 'auth.forgot' | transloco }}</a
           ><a routerLink="/register">{{ 'auth.register' | transloco }}</a>
         </div>
-        <app-simulation-notice />
       </div>
     </section>
   `,
@@ -122,7 +120,7 @@ export class LoginPage {
 
 @Component({
   selector: 'app-recovery-page',
-  imports: [ReactiveFormsModule, RouterLink, TranslocoPipe, SimulationNoticeComponent],
+  imports: [ReactiveFormsModule, RouterLink, TranslocoPipe],
   template: `<section class="auth-page">
     <div class="auth-panel">
       <a class="back-link" routerLink="/access">← {{ 'common.back' | transloco }}</a>
@@ -142,7 +140,6 @@ export class LoginPage {
           </button>
         </form>
       }
-      <app-simulation-notice />
     </div>
   </section>`,
 })
@@ -175,7 +172,7 @@ export class RecoveryPage {
 
 @Component({
   selector: 'app-register-page',
-  imports: [ReactiveFormsModule, RouterLink, TranslocoPipe, SimulationNoticeComponent],
+  imports: [ReactiveFormsModule, RouterLink, TranslocoPipe],
   template: `<section class="auth-page">
     <div class="auth-panel wide">
       <span class="eyebrow">Solventa</span>
@@ -212,8 +209,7 @@ export class RecoveryPage {
           {{ (loading() ? 'common.loading' : 'common.continue') | transloco }}
         </button>
       </form>
-      <a class="center-link" routerLink="/access">{{ 'register.haveAccount' | transloco }}</a
-      ><app-simulation-notice />
+      <a class="center-link" routerLink="/access">{{ 'register.haveAccount' | transloco }}</a>
     </div>
   </section>`,
 })

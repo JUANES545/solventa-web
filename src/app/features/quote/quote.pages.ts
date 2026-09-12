@@ -4,15 +4,11 @@ import { Router, RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { AppStore } from '../../core/app-store.service';
 import { CopPipe } from '../../shared/format.pipes';
-import {
-  ErrorStateComponent,
-  LoadingStateComponent,
-  SimulationNoticeComponent,
-} from '../../shared/ui.components';
+import { ErrorStateComponent, LoadingStateComponent } from '../../shared/ui.components';
 
 @Component({
   selector: 'app-quote-page',
-  imports: [ReactiveFormsModule, TranslocoPipe, SimulationNoticeComponent],
+  imports: [ReactiveFormsModule, TranslocoPipe],
   template: `<section class="page-stack form-page">
     <div class="page-heading">
       <span class="eyebrow">1 / 4 · {{ 'nav.quote' | transloco }}</span>
@@ -59,7 +55,6 @@ import {
         <button class="button conversion" type="submit">{{ 'quote.calculate' | transloco }}</button>
       </div>
     </form>
-    <app-simulation-notice />
   </section>`,
 })
 export class QuotePage {
@@ -95,14 +90,7 @@ export class QuotePage {
 
 @Component({
   selector: 'app-plans-page',
-  imports: [
-    RouterLink,
-    TranslocoPipe,
-    CopPipe,
-    LoadingStateComponent,
-    ErrorStateComponent,
-    SimulationNoticeComponent,
-  ],
+  imports: [RouterLink, TranslocoPipe, CopPipe, LoadingStateComponent, ErrorStateComponent],
   template: `<section class="page-stack">
     <div class="page-heading">
       <span class="eyebrow">2 / 4 · {{ 'nav.quote' | transloco }}</span>
@@ -155,7 +143,6 @@ export class QuotePage {
     <div class="form-actions">
       <a class="back-link" routerLink="/app/quote">← {{ 'common.back' | transloco }}</a>
     </div>
-    <app-simulation-notice />
   </section>`,
 })
 export class PlansPage implements OnInit {
@@ -186,7 +173,7 @@ export class PlansPage implements OnInit {
 
 @Component({
   selector: 'app-checkout-page',
-  imports: [ReactiveFormsModule, RouterLink, TranslocoPipe, CopPipe, SimulationNoticeComponent],
+  imports: [ReactiveFormsModule, RouterLink, TranslocoPipe, CopPipe],
   template: `<section class="page-stack form-page">
     <div class="page-heading">
       <span class="eyebrow">3 / 4 · {{ 'checkout.title' | transloco }}</span>
@@ -237,7 +224,6 @@ export class PlansPage implements OnInit {
         ><button class="button conversion" type="submit">{{ 'checkout.pay' | transloco }}</button>
       </div>
     </form>
-    <app-simulation-notice />
   </section>`,
 })
 export class CheckoutPage {
@@ -257,7 +243,7 @@ export class CheckoutPage {
 
 @Component({
   selector: 'app-payment-page',
-  imports: [RouterLink, TranslocoPipe, CopPipe, SimulationNoticeComponent],
+  imports: [RouterLink, TranslocoPipe, CopPipe],
   template: `<section class="page-stack form-page">
     <div class="page-heading">
       <span class="eyebrow">4 / 4 · {{ 'payment.title' | transloco }}</span>
@@ -293,7 +279,6 @@ export class CheckoutPage {
         <a class="button primary" routerLink="/app/otp">{{ 'common.continue' | transloco }}</a>
       </div>
     }
-    <app-simulation-notice />
   </section>`,
 })
 export class PaymentPage {
@@ -319,7 +304,7 @@ export class PaymentPage {
 
 @Component({
   selector: 'app-otp-page',
-  imports: [ReactiveFormsModule, TranslocoPipe, SimulationNoticeComponent],
+  imports: [ReactiveFormsModule, TranslocoPipe],
   template: `<section class="page-stack form-page">
     <div class="auth-panel centered">
       <span class="eyebrow">Solventa Secure</span>
@@ -342,7 +327,6 @@ export class PaymentPage {
           {{ (loading() ? 'otp.processing' : 'otp.action') | transloco }}
         </button>
       </form>
-      <app-simulation-notice />
     </div>
   </section>`,
 })
@@ -373,7 +357,7 @@ export class OtpPage {
 
 @Component({
   selector: 'app-issued-page',
-  imports: [RouterLink, TranslocoPipe, SimulationNoticeComponent],
+  imports: [RouterLink, TranslocoPipe],
   template: `<section class="success-page">
     <div class="success-illustration">✓</div>
     <span class="eyebrow">Solventa</span>
@@ -391,7 +375,6 @@ export class OtpPage {
         'issued.dashboard' | transloco
       }}</a>
     </div>
-    <app-simulation-notice />
   </section>`,
 })
 export class IssuedPage {

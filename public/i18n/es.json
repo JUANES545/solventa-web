@@ -34,7 +34,6 @@
     "status": "Estado",
     "date": "Fecha",
     "amount": "Valor",
-    "simulated": "Esta operación es simulada para fines académicos. No produce efectos reales.",
     "success": "Operación completada",
     "empty": "No hay información para mostrar.",
     "required": "Este campo es obligatorio.",

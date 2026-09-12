@@ -34,7 +34,6 @@
     "status": "Status",
     "date": "Date",
     "amount": "Amount",
-    "simulated": "This operation is simulated for academic purposes. It has no real-world effect.",
     "success": "Operation completed",
     "empty": "There is no information to display.",
     "required": "This field is required.",
