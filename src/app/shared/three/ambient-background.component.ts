@@ -39,6 +39,8 @@ export class AmbientBackgroundComponent implements AfterViewInit, OnDestroy {
   private readonly timer = new THREE.Timer();
   private readonly pointer = new THREE.Vector2();
   private readonly pointerTarget = new THREE.Vector2();
+  private readonly pointerRaycaster = new THREE.Raycaster();
+  private readonly pointerWorld = new THREE.Vector3();
   private readonly systemThemeQuery = this.createMediaQuery('(prefers-color-scheme: dark)');
   private readonly motionQuery = this.createMediaQuery('(prefers-reduced-motion: reduce)');
   private readonly orbs: AmbientOrb[] = [];
@@ -401,39 +403,58 @@ export class AmbientBackgroundComponent implements AfterViewInit, OnDestroy {
 
   private renderFrame(elapsed: number): void {
     if (!this.renderer || !this.flowMaterial) return;
-    this.pointer.lerp(this.pointerTarget, 0.045);
+    this.pointer.lerp(this.pointerTarget, 0.075);
     this.flowMaterial.uniforms['uTime'].value = elapsed;
     this.flowMaterial.uniforms['uPointer'].value.set(
       this.pointer.x * 0.5 + 0.5,
       this.pointer.y * 0.5 + 0.5,
     );
 
-    const pointerWorld = new THREE.Vector2(
-      this.pointer.x * this.viewHalfWidth,
-      this.pointer.y * this.viewHalfHeight,
-    );
+    this.pointerRaycaster.setFromCamera(this.pointer, this.orbCamera);
     this.orbs.forEach((orb, index) => {
-      const driftX = Math.sin(elapsed * 0.12 + orb.phase) * (0.08 + orb.scale * 0.035);
-      const driftY = Math.cos(elapsed * 0.1 + orb.phase * 1.3) * (0.11 + orb.scale * 0.04);
-      const dx = orb.basePosition.x - pointerWorld.x;
-      const dy = orb.basePosition.y - pointerWorld.y;
+      const driftX =
+        Math.sin(elapsed * 0.18 + orb.phase) * (0.13 + orb.scale * 0.045) +
+        Math.cos(elapsed * 0.075 + orb.phase * 1.7) * 0.045;
+      const driftY =
+        Math.cos(elapsed * 0.15 + orb.phase * 1.3) * (0.16 + orb.scale * 0.05) +
+        Math.sin(elapsed * 0.09 + orb.phase * 0.6) * 0.035;
+      const driftZ = Math.sin(elapsed * 0.12 + orb.phase * 0.8) * (0.09 + orb.scale * 0.035);
+
+      const pointerDepth =
+        (orb.depth - this.pointerRaycaster.ray.origin.z) / this.pointerRaycaster.ray.direction.z;
+      this.pointerWorld
+        .copy(this.pointerRaycaster.ray.origin)
+        .addScaledVector(this.pointerRaycaster.ray.direction, pointerDepth);
+
+      const dx = orb.basePosition.x - this.pointerWorld.x;
+      const dy = orb.basePosition.y - this.pointerWorld.y;
       const distance = Math.max(Math.hypot(dx, dy), 0.001);
-      const influence = Math.max(0, 1 - distance / 2.8) * 0.22;
-      const targetX = orb.basePosition.x + driftX + (dx / distance) * influence;
+      const interactionRadius = 1.15 + orb.scale * 0.9;
+      const proximity = THREE.MathUtils.clamp(1 - distance / interactionRadius, 0, 1);
+      const easedProximity = proximity * proximity * (3 - 2 * proximity);
+      const repulsion = easedProximity * (0.22 + orb.scale * 0.12);
+      const depthResponse = THREE.MathUtils.clamp((orb.depth + 3.9) / 2.6, 0.18, 1);
+      const parallaxX = -this.pointer.x * (0.045 + depthResponse * 0.07);
+      const parallaxY = -this.pointer.y * (0.035 + depthResponse * 0.055);
+      const targetX = orb.basePosition.x + driftX + parallaxX + (dx / distance) * repulsion;
       const targetY =
         orb.basePosition.y +
         driftY +
-        (dy / distance) * influence +
-        Math.sin(this.scrollTarget * 0.7 + orb.phase) * 0.12;
+        parallaxY +
+        (dy / distance) * repulsion +
+        Math.sin(this.scrollTarget * 0.7 + orb.phase) * 0.16;
+      const targetZ = orb.depth + driftZ - easedProximity * 0.08;
 
-      orb.group.position.x += (targetX - orb.group.position.x) * 0.035;
-      orb.group.position.y += (targetY - orb.group.position.y) * 0.035;
+      orb.group.position.x += (targetX - orb.group.position.x) * 0.055;
+      orb.group.position.y += (targetY - orb.group.position.y) * 0.055;
+      orb.group.position.z += (targetZ - orb.group.position.z) * 0.04;
       orb.group.rotation.x = elapsed * (0.018 + index * 0.0018) + orb.phase;
       orb.group.rotation.y = elapsed * (0.025 + index * 0.0022) - orb.phase * 0.4;
-      const pulse = orb.scale * (1 + Math.sin(elapsed * 0.16 + orb.phase) * 0.018);
+      const pulse =
+        orb.scale * (1 + Math.sin(elapsed * 0.24 + orb.phase) * 0.028 + easedProximity * 0.035);
       orb.group.scale.setScalar(pulse);
     });
-    this.orbGroup.rotation.z = this.pointer.x * 0.012;
+    this.orbGroup.rotation.z = this.pointer.x * 0.018;
 
     this.renderer.clear();
     this.renderer.render(this.flowScene, this.flowCamera);
