@@ -1,11 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { TestScenario } from '../../models/domain.models';
+import { IconName, SvgIconComponent } from '../../shared/svg-icon.component';
 import { TestScenarioService } from '../../testing/test-scenario.service';
 
 @Component({
   selector: 'app-scenario-page',
-  imports: [TranslocoPipe],
+  imports: [TranslocoPipe, SvgIconComponent],
   template: `
     <section class="page-stack">
       <div class="page-heading">
@@ -26,7 +27,7 @@ import { TestScenarioService } from '../../testing/test-scenario.service';
             [class.active]="service.current() === scenario"
             (click)="service.select(scenario)"
           >
-            <span aria-hidden="true">{{ icons[scenario] }}</span
+            <span><app-icon [name]="icons[scenario]" [size]="27" /></span
             ><strong>{{ 'scenarios.' + scenario | transloco }}</strong>
           </button>
         }
@@ -47,15 +48,15 @@ export class ScenarioPage {
     'claimSuccess',
     'claimError',
   ];
-  readonly icons: Record<TestScenario, string> = {
-    normal: '✓',
-    empty: '□',
-    networkError: '↯',
-    slow: '◷',
-    sessionExpired: '⌛',
-    paymentRejected: '×',
-    quoteUnavailable: '∅',
-    claimSuccess: '◇',
-    claimError: '!',
+  readonly icons: Record<TestScenario, IconName> = {
+    normal: 'check',
+    empty: 'empty',
+    networkError: 'network',
+    slow: 'clock',
+    sessionExpired: 'hourglass',
+    paymentRejected: 'error',
+    quoteUnavailable: 'empty',
+    claimSuccess: 'claim',
+    claimError: 'error',
   };
 }

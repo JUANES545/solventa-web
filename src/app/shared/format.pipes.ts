@@ -17,10 +17,11 @@ export class CopPipe implements PipeTransform {
 @Pipe({ name: 'localDate', standalone: true, pure: false })
 export class LocalDatePipe implements PipeTransform {
   private readonly transloco = inject(TranslocoService);
-  transform(value: string): string {
+  transform(value: string | null | undefined): string {
+    if (!value) return '—';
     const locale = this.transloco.getActiveLang() === 'en' ? 'en-US' : 'es-CO';
-    return new Intl.DateTimeFormat(locale, { dateStyle: 'medium', timeZone: 'UTC' }).format(
-      new Date(`${value}T00:00:00Z`),
-    );
+    const parsed = new Date(/^\d{4}-\d{2}-\d{2}$/.test(value) ? `${value}T00:00:00Z` : value);
+    if (Number.isNaN(parsed.getTime())) return '—';
+    return new Intl.DateTimeFormat(locale, { dateStyle: 'medium', timeZone: 'UTC' }).format(parsed);
   }
 }

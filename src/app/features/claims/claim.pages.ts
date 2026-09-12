@@ -4,11 +4,12 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { AppStore } from '../../core/app-store.service';
 import { LocalDatePipe } from '../../shared/format.pipes';
+import { SvgIconComponent } from '../../shared/svg-icon.component';
 import { LoadingStateComponent } from '../../shared/ui.components';
 
 @Component({
   selector: 'app-claims-page',
-  imports: [RouterLink, TranslocoPipe, LocalDatePipe, LoadingStateComponent],
+  imports: [RouterLink, TranslocoPipe, LocalDatePipe, LoadingStateComponent, SvgIconComponent],
   template: `<section class="page-stack">
     <div class="page-heading split">
       <div>
@@ -22,7 +23,7 @@ import { LoadingStateComponent } from '../../shared/ui.components';
       <app-loading-state />
     } @else if (!store.claims().length) {
       <div class="empty-state">
-        <span>◇</span>
+        <span><app-icon name="claim" [size]="30" /></span>
         <p>{{ 'claims.empty' | transloco }}</p>
         <a class="button primary" routerLink="/app/claims/new">{{ 'claims.new' | transloco }}</a>
       </div>
@@ -37,8 +38,8 @@ import { LoadingStateComponent } from '../../shared/ui.components';
             <span class="status" [class]="'status ' + claim.status">{{
               'claims.' + claim.status | transloco
             }}</span
-            ><span aria-hidden="true">→</span></a
-          >
+            ><span><app-icon name="arrow-right" [size]="19" /></span
+          ></a>
         }
       </div>
     }
@@ -56,7 +57,7 @@ export class ClaimsPage implements OnInit {
 
 @Component({
   selector: 'app-new-claim-page',
-  imports: [ReactiveFormsModule, RouterLink, TranslocoPipe],
+  imports: [ReactiveFormsModule, RouterLink, TranslocoPipe, SvgIconComponent],
   template: `<section class="page-stack form-page">
     <div class="page-heading">
       <span class="eyebrow">{{ 'claims.new' | transloco }}</span>
@@ -103,7 +104,7 @@ export class ClaimsPage implements OnInit {
               type="button"
               (click)="demoLocation()"
             >
-              {{ 'claims.locationDemo' | transloco }}
+              <app-icon name="location" [size]="18" />{{ 'claims.locationDemo' | transloco }}
             </button>
           </div>
         </div>
@@ -132,7 +133,8 @@ export class ClaimsPage implements OnInit {
         <div class="inline-alert error" role="alert">{{ 'claims.error' | transloco }}</div>
       }
       <div class="form-actions between">
-        <a class="back-link" routerLink="/app/claims">← {{ 'common.back' | transloco }}</a
+        <a class="back-link" routerLink="/app/claims"
+          ><app-icon name="arrow-left" [size]="17" />{{ 'common.back' | transloco }}</a
         ><button class="button conversion" type="submit" [disabled]="loading()">
           {{ (loading() ? 'claims.processing' : 'claims.submit') | transloco }}
         </button>
@@ -196,9 +198,11 @@ export class NewClaimPage implements OnInit {
 
 @Component({
   selector: 'app-claim-detail-page',
-  imports: [RouterLink, TranslocoPipe, LocalDatePipe, LoadingStateComponent],
+  imports: [RouterLink, TranslocoPipe, LocalDatePipe, LoadingStateComponent, SvgIconComponent],
   template: `<section class="page-stack narrow-content">
-    <a class="back-link" routerLink="/app/claims">← {{ 'common.back' | transloco }}</a>
+    <a class="back-link" routerLink="/app/claims"
+      ><app-icon name="arrow-left" [size]="17" />{{ 'common.back' | transloco }}</a
+    >
     @if (loading()) {
       <app-loading-state />
     } @else if (!claim()) {
@@ -208,7 +212,7 @@ export class NewClaimPage implements OnInit {
     } @else {
       @if (created) {
         <div class="inline-alert success" role="status">
-          ✓ {{ 'claims.successBody' | transloco }}
+          <app-icon name="check" [size]="19" />{{ 'claims.successBody' | transloco }}
         </div>
       }
       <div class="detail-hero">
