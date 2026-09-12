@@ -1,12 +1,11 @@
-@use '@fontsource-variable/ibm-plex-sans';
-@use '@fontsource/ibm-plex-serif/latin-600.css';
-@use '@fontsource/ibm-plex-serif/latin-ext-600.css';
+@use '@fontsource-variable/afacad-flux';
+@use '@fontsource-variable/geologica';
 @use '@angular/material' as mat;
 
 :root {
   color-scheme: light;
-  --font-body: 'IBM Plex Sans Variable', 'Segoe UI', sans-serif;
-  --font-display: 'IBM Plex Serif', Georgia, serif;
+  --font-body: 'Afacad Flux Variable', 'Segoe UI', sans-serif;
+  --font-display: 'Geologica Variable', 'Trebuchet MS', sans-serif;
   --color-background: #f7f9fc;
   --color-surface: #ffffff;
   --color-surface-secondary: #e8eef6;
@@ -88,17 +87,13 @@ html {
 body {
   margin: 0;
   min-height: 100vh;
-  background:
-    radial-gradient(
-      circle at 78% -12%,
-      color-mix(in srgb, var(--color-conversion) 7%, transparent),
-      transparent 30rem
-    ),
-    var(--color-background);
+  position: relative;
+  isolation: isolate;
+  background: var(--color-background);
   color: var(--color-text);
   font-family: var(--font-body);
-  font-size: 1rem;
-  line-height: 1.55;
+  font-size: 1.04rem;
+  line-height: 1.52;
 }
 button,
 input,
@@ -118,7 +113,7 @@ h1,
 h2,
 h3 {
   font-family: var(--font-display);
-  font-weight: 600;
+  font-weight: 640;
   text-wrap: balance;
 }
 h1,
@@ -132,16 +127,16 @@ h1 {
   margin-bottom: 0.55rem;
   font-size: clamp(2rem, 4vw, 3.35rem);
   line-height: 1.08;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.035em;
 }
 h2 {
   margin-bottom: 0.65rem;
   line-height: 1.2;
-  letter-spacing: -0.012em;
+  letter-spacing: -0.026em;
 }
 h3 {
   margin-bottom: 0.45rem;
-  letter-spacing: -0.008em;
+  letter-spacing: -0.018em;
 }
 p {
   color: var(--color-text-secondary);
@@ -172,6 +167,27 @@ p {
   border: 0;
 }
 
+app-ambient-background {
+  display: block;
+  position: fixed;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  contain: strict;
+}
+.ambient-background-canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  opacity: 0.96;
+}
+.application-layer {
+  min-height: 100vh;
+  position: relative;
+  z-index: 1;
+}
+
 .skip-link {
   position: fixed;
   z-index: 1000;
@@ -194,9 +210,9 @@ p {
   color: var(--color-text);
   font-family: var(--font-display);
   font-size: 1.22rem;
-  font-weight: 600;
+  font-weight: 680;
   text-decoration: none;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
 }
 .brand-light {
   color: #fff;
