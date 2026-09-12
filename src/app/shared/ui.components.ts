@@ -1,21 +1,13 @@
 import { Component, input, output } from '@angular/core';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TranslocoPipe } from '@jsverse/transloco';
-
-@Component({
-  selector: 'app-simulation-notice',
-  imports: [TranslocoPipe],
-  template: `<div class="simulation-notice" role="note">
-    <span aria-hidden="true">ⓘ</span><span>{{ 'common.simulated' | transloco }}</span>
-  </div>`,
-})
-export class SimulationNoticeComponent {}
+import { SvgIconComponent } from './svg-icon.component';
 
 @Component({
   selector: 'app-loading-state',
   imports: [MatProgressSpinnerModule, TranslocoPipe],
   template: `<div class="state-card" role="status">
-    <mat-spinner diameter="34" />
+    <mat-spinner diameter="34" [attr.aria-label]="labelKey() | transloco" />
     <p>{{ labelKey() | transloco }}</p>
   </div>`,
 })
@@ -25,9 +17,9 @@ export class LoadingStateComponent {
 
 @Component({
   selector: 'app-error-state',
-  imports: [TranslocoPipe],
+  imports: [TranslocoPipe, SvgIconComponent],
   template: `<div class="state-card error-card" role="alert">
-    <div class="state-icon" aria-hidden="true">!</div>
+    <div class="state-icon"><app-icon name="error" [size]="30" /></div>
     <p>{{ messageKey() | transloco }}</p>
     <button class="button secondary" type="button" (click)="retry.emit()">
       {{ 'common.retry' | transloco }}

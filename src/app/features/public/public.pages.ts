@@ -1,11 +1,19 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
-import { SimulationNoticeComponent } from '../../shared/ui.components';
+import { PolicyCardVisualComponent } from '../../shared/policy-card-visual.component';
+import { SvgIconComponent } from '../../shared/svg-icon.component';
+import { TravelGlobeComponent } from '../../shared/three/travel-globe.component';
 
 @Component({
   selector: 'app-landing-page',
-  imports: [RouterLink, TranslocoPipe, SimulationNoticeComponent],
+  imports: [
+    RouterLink,
+    TranslocoPipe,
+    SvgIconComponent,
+    TravelGlobeComponent,
+    PolicyCardVisualComponent,
+  ],
   template: `
     <section class="hero page-section">
       <div class="hero-copy">
@@ -18,19 +26,10 @@ import { SimulationNoticeComponent } from '../../shared/ui.components';
             'landing.secondary' | transloco
           }}</a>
         </div>
-        <app-simulation-notice />
       </div>
-      <div class="hero-visual" aria-hidden="true">
-        <div class="visual-card visual-card-main">
-          <span class="mini-label">SOL-TRV-2026-1842</span
-          ><strong>{{ 'products.travel' | transloco }}</strong
-          ><span class="status success">✓ {{ 'policies.active' | transloco }}</span>
-          <div class="visual-line"></div>
-          <div class="visual-line short"></div>
-        </div>
-        <div class="visual-card visual-card-float">
-          <span>✈</span><strong>COP 139.900</strong><small>Plus</small>
-        </div>
+      <div class="hero-visual">
+        <app-travel-globe />
+        <app-policy-card-visual />
       </div>
     </section>
     <section class="page-section section-stack" aria-labelledby="products-title">
@@ -40,17 +39,17 @@ import { SimulationNoticeComponent } from '../../shared/ui.components';
       </div>
       <div class="card-grid three">
         <article class="feature-card">
-          <span class="feature-icon" aria-hidden="true">✈</span>
+          <span class="feature-icon"><app-icon name="plane" [size]="22" /></span>
           <h3>{{ 'landing.travel' | transloco }}</h3>
           <p>{{ 'landing.travelBody' | transloco }}</p>
         </article>
         <article class="feature-card">
-          <span class="feature-icon" aria-hidden="true">♥</span>
+          <span class="feature-icon"><app-icon name="heart" [size]="22" /></span>
           <h3>{{ 'landing.life' | transloco }}</h3>
           <p>{{ 'landing.lifeBody' | transloco }}</p>
         </article>
         <article class="feature-card">
-          <span class="feature-icon" aria-hidden="true">▣</span>
+          <span class="feature-icon"><app-icon name="device" [size]="22" /></span>
           <h3>{{ 'landing.device' | transloco }}</h3>
           <p>{{ 'landing.deviceBody' | transloco }}</p>
         </article>
@@ -60,8 +59,15 @@ import { SimulationNoticeComponent } from '../../shared/ui.components';
       <div>
         <h2>{{ 'landing.trustTitle' | transloco }}</h2>
         <p>{{ 'landing.trustBody' | transloco }}</p>
+        <ul class="trust-list">
+          <li><app-icon name="shield" [size]="19" />{{ 'landing.trustProtection' | transloco }}</li>
+          <li><app-icon name="globe" [size]="19" />{{ 'landing.trustAnywhere' | transloco }}</li>
+          <li><app-icon name="help" [size]="19" />{{ 'landing.trustSupport' | transloco }}</li>
+        </ul>
       </div>
-      <a class="button conversion" routerLink="/register">{{ 'landing.primary' | transloco }}</a>
+      <a class="button conversion" routerLink="/register"
+        >{{ 'landing.primary' | transloco }}<app-icon name="arrow-right" [size]="18"
+      /></a>
     </section>
   `,
 })

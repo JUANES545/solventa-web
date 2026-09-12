@@ -4,13 +4,21 @@ import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { AppStore } from '../../core/app-store.service';
 import { ThemeService } from '../../core/theme.service';
 import { CopPipe, LocalDatePipe } from '../../shared/format.pipes';
+import { SvgIconComponent } from '../../shared/svg-icon.component';
 import { ErrorStateComponent, LoadingStateComponent } from '../../shared/ui.components';
 import { ThemePreference } from '../../models/domain.models';
 import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-payments-page',
-  imports: [TranslocoPipe, CopPipe, LocalDatePipe, LoadingStateComponent, ErrorStateComponent],
+  imports: [
+    TranslocoPipe,
+    CopPipe,
+    LocalDatePipe,
+    LoadingStateComponent,
+    ErrorStateComponent,
+    SvgIconComponent,
+  ],
   template: `<section class="page-stack">
     <div class="page-heading">
       <span class="eyebrow">Solventa</span>
@@ -23,6 +31,7 @@ import { environment } from '../../../environments/environment';
       <app-error-state (retry)="load()" />
     } @else if (!store.payments().length) {
       <div class="empty-state">
+        <span><app-icon name="payment" [size]="30" /></span>
         <p>{{ 'payments.empty' | transloco }}</p>
       </div>
     } @else {
@@ -65,7 +74,7 @@ export class PaymentsPage implements OnInit {
 
 @Component({
   selector: 'app-notifications-page',
-  imports: [TranslocoPipe, LocalDatePipe, LoadingStateComponent],
+  imports: [TranslocoPipe, LocalDatePipe, LoadingStateComponent, SvgIconComponent],
   template: `<section class="page-stack">
     <div class="page-heading split">
       <div>
@@ -82,7 +91,7 @@ export class PaymentsPage implements OnInit {
       <app-loading-state />
     } @else if (!store.notifications().length) {
       <div class="empty-state">
-        <span aria-hidden="true">✓</span>
+        <span><app-icon name="check" [size]="30" /></span>
         <p>{{ 'notifications.empty' | transloco }}</p>
       </div>
     } @else {
@@ -123,7 +132,7 @@ export class NotificationsPage implements OnInit {
 
 @Component({
   selector: 'app-profile-page',
-  imports: [RouterLink, TranslocoPipe],
+  imports: [RouterLink, TranslocoPipe, SvgIconComponent],
   template: `<section class="page-stack narrow-content">
     <div class="page-heading">
       <span class="eyebrow">Solventa</span>
@@ -134,7 +143,9 @@ export class NotificationsPage implements OnInit {
         <span class="avatar large">VG</span>
         <div>
           <h2>{{ store.customer()?.fullName }}</h2>
-          <span class="status active">✓ {{ 'profile.verified' | transloco }}</span>
+          <span class="status active"
+            ><app-icon name="check" [size]="14" />{{ 'profile.verified' | transloco }}</span
+          >
         </div>
       </div>
       <dl class="profile-details">
@@ -153,7 +164,8 @@ export class NotificationsPage implements OnInit {
       </dl>
     </article>
     <div class="button-row">
-      <a class="button secondary" routerLink="/app/settings">{{ 'nav.settings' | transloco }}</a
+      <a class="button secondary" routerLink="/app/settings"
+        ><app-icon name="settings" [size]="18" />{{ 'nav.settings' | transloco }}</a
       ><button class="button danger" type="button" (click)="logout()">
         {{ 'common.logout' | transloco }}
       </button>

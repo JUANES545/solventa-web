@@ -3,11 +3,11 @@ import { ReactiveFormsModule, Validators, FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { AppStore } from '../../core/app-store.service';
-import { SimulationNoticeComponent } from '../../shared/ui.components';
+import { SvgIconComponent } from '../../shared/svg-icon.component';
 
 @Component({
   selector: 'app-login-page',
-  imports: [ReactiveFormsModule, RouterLink, TranslocoPipe, SimulationNoticeComponent],
+  imports: [ReactiveFormsModule, RouterLink, TranslocoPipe, SvgIconComponent],
   template: `
     <section class="auth-page">
       <div class="auth-panel">
@@ -15,10 +15,14 @@ import { SimulationNoticeComponent } from '../../shared/ui.components';
         <h1>{{ 'auth.title' | transloco }}</h1>
         <p>{{ 'auth.subtitle' | transloco }}</p>
         @if (expired()) {
-          <div class="inline-alert warning" role="alert">{{ 'auth.expired' | transloco }}</div>
+          <div class="inline-alert warning" role="alert">
+            <app-icon name="clock" [size]="19" />{{ 'auth.expired' | transloco }}
+          </div>
         }
         @if (error()) {
-          <div class="inline-alert error" role="alert">{{ error()! | transloco }}</div>
+          <div class="inline-alert error" role="alert">
+            <app-icon name="error" [size]="19" />{{ error()! | transloco }}
+          </div>
         }
         <form [formGroup]="form" (ngSubmit)="submit()" novalidate>
           <label for="login-email">{{ 'auth.email' | transloco }}</label
@@ -60,7 +64,6 @@ import { SimulationNoticeComponent } from '../../shared/ui.components';
           <a routerLink="/recover-password">{{ 'auth.forgot' | transloco }}</a
           ><a routerLink="/register">{{ 'auth.register' | transloco }}</a>
         </div>
-        <app-simulation-notice />
       </div>
     </section>
   `,
@@ -122,14 +125,18 @@ export class LoginPage {
 
 @Component({
   selector: 'app-recovery-page',
-  imports: [ReactiveFormsModule, RouterLink, TranslocoPipe, SimulationNoticeComponent],
+  imports: [ReactiveFormsModule, RouterLink, TranslocoPipe, SvgIconComponent],
   template: `<section class="auth-page">
     <div class="auth-panel">
-      <a class="back-link" routerLink="/access">← {{ 'common.back' | transloco }}</a>
+      <a class="back-link" routerLink="/access"
+        ><app-icon name="arrow-left" [size]="17" />{{ 'common.back' | transloco }}</a
+      >
       <h1>{{ 'auth.resetTitle' | transloco }}</h1>
       <p>{{ 'auth.resetBody' | transloco }}</p>
       @if (success()) {
-        <div class="inline-alert success" role="status">{{ 'auth.resetSuccess' | transloco }}</div>
+        <div class="inline-alert success" role="status">
+          <app-icon name="check" [size]="19" />{{ 'auth.resetSuccess' | transloco }}
+        </div>
       } @else {
         <form [formGroup]="form" (ngSubmit)="submit()">
           <label for="reset-email">{{ 'auth.email' | transloco }}</label
@@ -142,7 +149,6 @@ export class LoginPage {
           </button>
         </form>
       }
-      <app-simulation-notice />
     </div>
   </section>`,
 })
@@ -175,7 +181,7 @@ export class RecoveryPage {
 
 @Component({
   selector: 'app-register-page',
-  imports: [ReactiveFormsModule, RouterLink, TranslocoPipe, SimulationNoticeComponent],
+  imports: [ReactiveFormsModule, RouterLink, TranslocoPipe, SvgIconComponent],
   template: `<section class="auth-page">
     <div class="auth-panel wide">
       <span class="eyebrow">Solventa</span>
@@ -209,11 +215,11 @@ export class RecoveryPage {
           <div class="form-error-summary" role="alert">{{ 'common.required' | transloco }}</div>
         }
         <button class="button primary full" type="submit" [disabled]="loading()">
-          {{ (loading() ? 'common.loading' : 'common.continue') | transloco }}
+          {{ (loading() ? 'common.loading' : 'common.continue') | transloco
+          }}<app-icon name="arrow-right" [size]="18" />
         </button>
       </form>
-      <a class="center-link" routerLink="/access">{{ 'register.haveAccount' | transloco }}</a
-      ><app-simulation-notice />
+      <a class="center-link" routerLink="/access">{{ 'register.haveAccount' | transloco }}</a>
     </div>
   </section>`,
 })

@@ -3,11 +3,8 @@ import { RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { AppStore } from '../../core/app-store.service';
 import { CopPipe, LocalDatePipe } from '../../shared/format.pipes';
-import {
-  ErrorStateComponent,
-  LoadingStateComponent,
-  SimulationNoticeComponent,
-} from '../../shared/ui.components';
+import { IconName, SvgIconComponent } from '../../shared/svg-icon.component';
+import { ErrorStateComponent, LoadingStateComponent } from '../../shared/ui.components';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -18,7 +15,7 @@ import {
     LocalDatePipe,
     LoadingStateComponent,
     ErrorStateComponent,
-    SimulationNoticeComponent,
+    SvgIconComponent,
   ],
   template: `
     <section class="page-stack">
@@ -30,13 +27,12 @@ import {
         </div>
         <div class="button-row">
           <a class="button conversion" routerLink="/app/quote"
-            >✈ {{ 'dashboard.newQuote' | transloco }}</a
+            ><app-icon name="plane" [size]="18" />{{ 'dashboard.newQuote' | transloco }}</a
           ><a class="button secondary" routerLink="/app/claims/new"
-            >◇ {{ 'dashboard.reportClaim' | transloco }}</a
+            ><app-icon name="claim" [size]="18" />{{ 'dashboard.reportClaim' | transloco }}</a
           >
         </div>
       </div>
-      <app-simulation-notice />
       @if (loading()) {
         <app-loading-state />
       } @else if (error()) {
@@ -62,14 +58,15 @@ import {
           <section class="panel">
             <div class="panel-heading">
               <h2>{{ 'dashboard.activePolicies' | transloco }}</h2>
-              <a routerLink="/app/policies">{{ 'nav.policies' | transloco }} →</a>
+              <a class="text-link-icon" routerLink="/app/policies"
+                >{{ 'nav.policies' | transloco }}<app-icon name="arrow-right" [size]="17"
+              /></a>
             </div>
             <div class="compact-list">
               @for (policy of store.policies().slice(0, 3); track policy.id) {
                 <a class="compact-item" [routerLink]="['/app/policies', policy.id]"
-                  ><span class="item-icon">{{
-                    policy.product === 'travel' ? '✈' : policy.product === 'life' ? '♥' : '▣'
-                  }}</span
+                  ><span class="item-icon"
+                    ><app-icon [name]="productIcons[policy.product]" [size]="20" /></span
                   ><span
                     ><strong>{{ 'products.' + policy.product | transloco }}</strong
                     ><small>{{ policy.id }} · {{ policy.premiumCop | cop }}</small></span
@@ -83,7 +80,9 @@ import {
           <section class="panel">
             <div class="panel-heading">
               <h2>{{ 'dashboard.recentNotifications' | transloco }}</h2>
-              <a routerLink="/app/notifications">{{ 'nav.notifications' | transloco }} →</a>
+              <a class="text-link-icon" routerLink="/app/notifications"
+                >{{ 'nav.notifications' | transloco }}<app-icon name="arrow-right" [size]="17"
+              /></a>
             </div>
             <div class="compact-list">
               @for (item of store.notifications().slice(0, 3); track item.id) {
@@ -107,6 +106,12 @@ export class DashboardPage implements OnInit {
   readonly loading = signal(true);
   readonly error = signal(false);
   private completed = 0;
+  readonly productIcons: Record<'travel' | 'life' | 'device' | 'parametric', IconName> = {
+    travel: 'plane',
+    life: 'heart',
+    device: 'device',
+    parametric: 'shield',
+  };
   get activePolicies(): number {
     return this.store.policies().filter((item) => item.status === 'active').length;
   }

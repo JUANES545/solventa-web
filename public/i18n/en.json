@@ -17,6 +17,10 @@
     "utilityLabel": "Utility navigation",
     "legalLabel": "Legal navigation"
   },
+  "theme": {
+    "toLight": "Switch to light mode",
+    "toDark": "Switch to dark mode"
+  },
   "products": {
     "travel": "International Travel",
     "life": "Protected Life",
@@ -34,7 +38,6 @@
     "status": "Status",
     "date": "Date",
     "amount": "Amount",
-    "simulated": "This operation is simulated for academic purposes. It has no real-world effect.",
     "success": "Operation completed",
     "empty": "There is no information to display.",
     "required": "This field is required.",
@@ -55,8 +58,12 @@
     "lifeBody": "Support for you and the people who matter most.",
     "device": "Devices",
     "deviceBody": "Coverage for damage and theft of your devices.",
+    "globeLabel": "Interactive globe showing travel routes from Bogotá to international destinations.",
     "trustTitle": "Designed for clarity",
-    "trustBody": "Review coverage, payments, and claims without complicated language."
+    "trustBody": "Review coverage, payments, and claims without complicated language.",
+    "trustProtection": "Coverage that is easy to understand",
+    "trustAnywhere": "Assistance throughout your trip",
+    "trustSupport": "Support when you need it"
   },
   "auth": {
     "title": "Welcome back",
@@ -122,7 +129,11 @@
     "dateError": "The return date must be after departure.",
     "consent": "Use simulated Open Finance signals to personalize this quote.",
     "consentHint": "You can continue without permission and receive a standard quote.",
-    "calculate": "View plans"
+    "calculate": "View plans",
+    "routeEyebrow": "Route preview",
+    "routeTitle": "Your protected route",
+    "routeGraphic": "Air route from Bogotá to the selected destination",
+    "routeOrigin": "Origin"
   },
   "plans": {
     "title": "Choose your plan",
@@ -171,7 +182,8 @@
     "body": "The International Travel policy is now available in your demonstration account.",
     "policy": "Policy",
     "view": "View policy",
-    "dashboard": "Back to home"
+    "dashboard": "Back to home",
+    "visualLabel": "Three-dimensional seal confirming that the policy was issued."
   },
   "policies": {
     "title": "My policies",

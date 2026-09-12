@@ -3,63 +3,108 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { AppStore } from '../../core/app-store.service';
-import { CopPipe } from '../../shared/format.pipes';
-import {
-  ErrorStateComponent,
-  LoadingStateComponent,
-  SimulationNoticeComponent,
-} from '../../shared/ui.components';
+import { CopPipe, LocalDatePipe } from '../../shared/format.pipes';
+import { SvgIconComponent } from '../../shared/svg-icon.component';
+import { PolicySealSceneComponent } from '../../shared/three/policy-seal-scene.component';
+import { ErrorStateComponent, LoadingStateComponent } from '../../shared/ui.components';
 
 @Component({
   selector: 'app-quote-page',
-  imports: [ReactiveFormsModule, TranslocoPipe, SimulationNoticeComponent],
-  template: `<section class="page-stack form-page">
+  imports: [ReactiveFormsModule, TranslocoPipe, LocalDatePipe, SvgIconComponent],
+  template: `<section class="page-stack form-page quote-page">
     <div class="page-heading">
       <span class="eyebrow">1 / 4 · {{ 'nav.quote' | transloco }}</span>
       <h1>{{ 'quote.title' | transloco }}</h1>
       <p>{{ 'quote.subtitle' | transloco }}</p>
     </div>
-    <form class="panel form-panel" [formGroup]="form" (ngSubmit)="submit()">
-      <div class="form-grid">
-        <div class="span-two">
-          <label for="destination">{{ 'quote.destination' | transloco }}</label
-          ><input
-            id="destination"
-            formControlName="destination"
-            autocomplete="country-name"
-            placeholder="España"
-          />
+    <div class="quote-layout">
+      <form class="panel form-panel" [formGroup]="form" (ngSubmit)="submit()">
+        <div class="form-grid">
+          <div class="span-two">
+            <label for="destination">{{ 'quote.destination' | transloco }}</label
+            ><input
+              id="destination"
+              formControlName="destination"
+              autocomplete="country-name"
+              placeholder="España"
+            />
+          </div>
+          <div>
+            <label for="departure">{{ 'quote.departure' | transloco }}</label
+            ><input id="departure" type="date" formControlName="departureDate" />
+          </div>
+          <div>
+            <label for="return">{{ 'quote.return' | transloco }}</label
+            ><input id="return" type="date" formControlName="returnDate" />
+          </div>
+          <div>
+            <label for="travelers">{{ 'quote.travelers' | transloco }}</label
+            ><input id="travelers" type="number" min="1" max="8" formControlName="travelers" />
+          </div>
         </div>
-        <div>
-          <label for="departure">{{ 'quote.departure' | transloco }}</label
-          ><input id="departure" type="date" formControlName="departureDate" />
+        <label class="choice-row optional"
+          ><input type="checkbox" formControlName="personalized" /><span
+            ><strong>{{ 'quote.consent' | transloco }}</strong
+            ><small>{{ 'quote.consentHint' | transloco }}</small></span
+          ></label
+        >
+        @if (dateError()) {
+          <div class="inline-alert error" role="alert">
+            <app-icon name="error" [size]="19" />{{ 'quote.dateError' | transloco }}
+          </div>
+        }
+        @if (form.invalid && form.touched) {
+          <div class="form-error-summary" role="alert">{{ 'common.required' | transloco }}</div>
+        }
+        <div class="form-actions">
+          <button class="button conversion" type="submit">
+            {{ 'quote.calculate' | transloco }}<app-icon name="arrow-right" [size]="18" />
+          </button>
         </div>
-        <div>
-          <label for="return">{{ 'quote.return' | transloco }}</label
-          ><input id="return" type="date" formControlName="returnDate" />
+      </form>
+      <aside class="route-preview" [attr.aria-label]="'quote.routeTitle' | transloco">
+        <div class="route-preview-heading">
+          <span class="route-icon"><app-icon name="globe" [size]="22" /></span>
+          <div>
+            <small>{{ 'quote.routeEyebrow' | transloco }}</small>
+            <h2>{{ 'quote.routeTitle' | transloco }}</h2>
+          </div>
         </div>
-        <div>
-          <label for="travelers">{{ 'quote.travelers' | transloco }}</label
-          ><input id="travelers" type="number" min="1" max="8" formControlName="travelers" />
+        <svg viewBox="0 0 360 168" role="img" [attr.aria-label]="'quote.routeGraphic' | transloco">
+          <defs>
+            <linearGradient id="route-gradient" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0" stop-color="#75edff" />
+              <stop offset="1" stop-color="#0b7fa3" />
+            </linearGradient>
+          </defs>
+          <path class="route-grid-line" d="M28 114C102 8 252 8 332 114" />
+          <path class="route-flight-line" d="M28 114C102 8 252 8 332 114" />
+          <circle cx="28" cy="114" r="7" />
+          <circle cx="332" cy="114" r="7" />
+          <g class="route-plane" transform="translate(180 35) rotate(20)">
+            <path d="m-11 5 22-10-6 13-5-2-4 5-2-7z" />
+          </g>
+        </svg>
+        <div class="route-endpoints">
+          <span
+            ><app-icon name="location" [size]="17" /><small>{{
+              'quote.routeOrigin' | transloco
+            }}</small
+            ><strong>Bogotá</strong></span
+          >
+          <span
+            ><app-icon name="location" [size]="17" /><small>{{
+              'quote.destination' | transloco
+            }}</small
+            ><strong>{{ form.controls.destination.value || '—' }}</strong></span
+          >
         </div>
-      </div>
-      <label class="choice-row optional"
-        ><input type="checkbox" formControlName="personalized" /><span
-          ><strong>{{ 'quote.consent' | transloco }}</strong
-          ><small>{{ 'quote.consentHint' | transloco }}</small></span
-        ></label
-      >
-      @if (dateError()) {
-        <div class="inline-alert error" role="alert">{{ 'quote.dateError' | transloco }}</div>
-      }
-      @if (form.invalid && form.touched) {
-        <div class="form-error-summary" role="alert">{{ 'common.required' | transloco }}</div>
-      }
-      <div class="form-actions">
-        <button class="button conversion" type="submit">{{ 'quote.calculate' | transloco }}</button>
-      </div>
-    </form>
-    <app-simulation-notice />
+        <div class="route-dates">
+          <span>{{ form.controls.departureDate.value | localDate }}</span>
+          <span>{{ form.controls.returnDate.value | localDate }}</span>
+        </div>
+      </aside>
+    </div>
   </section>`,
 })
 export class QuotePage {
@@ -99,9 +144,9 @@ export class QuotePage {
     RouterLink,
     TranslocoPipe,
     CopPipe,
+    SvgIconComponent,
     LoadingStateComponent,
     ErrorStateComponent,
-    SimulationNoticeComponent,
   ],
   template: `<section class="page-stack">
     <div class="page-heading">
@@ -127,15 +172,15 @@ export class QuotePage {
             </div>
             <ul>
               <li>
-                <span>✓</span>{{ 'plans.medical' | transloco }}
+                <app-icon name="check" [size]="18" />{{ 'plans.medical' | transloco }}
                 <strong>{{ plan.medicalCoverageCop | cop }}</strong>
               </li>
               <li>
-                <span>✓</span>{{ 'plans.baggage' | transloco }}
+                <app-icon name="check" [size]="18" />{{ 'plans.baggage' | transloco }}
                 <strong>{{ plan.baggageCoverageCop | cop }}</strong>
               </li>
               <li>
-                <span>✓</span>{{ 'plans.delay' | transloco }}
+                <app-icon name="check" [size]="18" />{{ 'plans.delay' | transloco }}
                 <strong>{{ plan.delayCoverageCop | cop }}</strong>
               </li>
             </ul>
@@ -146,16 +191,17 @@ export class QuotePage {
               type="button"
               (click)="select(plan)"
             >
-              {{ 'plans.select' | transloco }}
+              {{ 'plans.select' | transloco }}<app-icon name="arrow-right" [size]="18" />
             </button>
           </article>
         }
       </div>
     }
     <div class="form-actions">
-      <a class="back-link" routerLink="/app/quote">← {{ 'common.back' | transloco }}</a>
+      <a class="back-link" routerLink="/app/quote"
+        ><app-icon name="arrow-left" [size]="17" />{{ 'common.back' | transloco }}</a
+      >
     </div>
-    <app-simulation-notice />
   </section>`,
 })
 export class PlansPage implements OnInit {
@@ -186,7 +232,7 @@ export class PlansPage implements OnInit {
 
 @Component({
   selector: 'app-checkout-page',
-  imports: [ReactiveFormsModule, RouterLink, TranslocoPipe, CopPipe, SimulationNoticeComponent],
+  imports: [ReactiveFormsModule, RouterLink, TranslocoPipe, CopPipe, SvgIconComponent],
   template: `<section class="page-stack form-page">
     <div class="page-heading">
       <span class="eyebrow">3 / 4 · {{ 'checkout.title' | transloco }}</span>
@@ -200,9 +246,9 @@ export class PlansPage implements OnInit {
           ><strong>{{ store.selectedPlan()!.priceCop | cop }}</strong>
         </div>
         <ul class="coverage-list">
-          <li><span>✓</span>{{ 'plans.medical' | transloco }}</li>
-          <li><span>✓</span>{{ 'plans.baggage' | transloco }}</li>
-          <li><span>✓</span>{{ 'plans.delay' | transloco }}</li>
+          <li><app-icon name="check" [size]="18" />{{ 'plans.medical' | transloco }}</li>
+          <li><app-icon name="check" [size]="18" />{{ 'plans.baggage' | transloco }}</li>
+          <li><app-icon name="check" [size]="18" />{{ 'plans.delay' | transloco }}</li>
         </ul>
       </section>
       <section class="panel">
@@ -233,11 +279,11 @@ export class PlansPage implements OnInit {
         <div class="inline-alert error" role="alert">{{ 'checkout.required' | transloco }}</div>
       }
       <div class="form-actions between">
-        <a class="back-link" routerLink="/app/plans">← {{ 'common.back' | transloco }}</a
+        <a class="back-link" routerLink="/app/plans"
+          ><app-icon name="arrow-left" [size]="17" />{{ 'common.back' | transloco }}</a
         ><button class="button conversion" type="submit">{{ 'checkout.pay' | transloco }}</button>
       </div>
     </form>
-    <app-simulation-notice />
   </section>`,
 })
 export class CheckoutPage {
@@ -257,7 +303,7 @@ export class CheckoutPage {
 
 @Component({
   selector: 'app-payment-page',
-  imports: [RouterLink, TranslocoPipe, CopPipe, SimulationNoticeComponent],
+  imports: [RouterLink, TranslocoPipe, CopPipe, SvgIconComponent],
   template: `<section class="page-stack form-page">
     <div class="page-heading">
       <span class="eyebrow">4 / 4 · {{ 'payment.title' | transloco }}</span>
@@ -266,8 +312,8 @@ export class CheckoutPage {
     </div>
     <section class="panel payment-panel">
       <label class="payment-method"
-        ><input type="radio" checked name="payment" /><span class="card-icon" aria-hidden="true"
-          >▰</span
+        ><input type="radio" checked name="payment" /><span class="card-icon"
+          ><app-icon name="card" [size]="25" /></span
         ><span
           ><strong>{{ 'payment.card' | transloco }}</strong
           ><small>{{ 'payment.safe' | transloco }}</small></span
@@ -277,7 +323,9 @@ export class CheckoutPage {
         <div class="inline-alert error" role="alert">{{ 'payment.rejected' | transloco }}</div>
       }
       @if (success()) {
-        <div class="inline-alert success" role="status">✓ {{ 'payment.approved' | transloco }}</div>
+        <div class="inline-alert success" role="status">
+          <app-icon name="check" [size]="19" />{{ 'payment.approved' | transloco }}
+        </div>
       }
       <button
         class="button conversion full"
@@ -293,7 +341,6 @@ export class CheckoutPage {
         <a class="button primary" routerLink="/app/otp">{{ 'common.continue' | transloco }}</a>
       </div>
     }
-    <app-simulation-notice />
   </section>`,
 })
 export class PaymentPage {
@@ -319,9 +366,10 @@ export class PaymentPage {
 
 @Component({
   selector: 'app-otp-page',
-  imports: [ReactiveFormsModule, TranslocoPipe, SimulationNoticeComponent],
+  imports: [ReactiveFormsModule, TranslocoPipe, SvgIconComponent],
   template: `<section class="page-stack form-page">
     <div class="auth-panel centered">
+      <span class="security-mark"><app-icon name="lock" [size]="20" /></span>
       <span class="eyebrow">Solventa Secure</span>
       <h1>{{ 'otp.title' | transloco }}</h1>
       <p>{{ 'otp.body' | transloco }}</p>
@@ -342,7 +390,6 @@ export class PaymentPage {
           {{ (loading() ? 'otp.processing' : 'otp.action') | transloco }}
         </button>
       </form>
-      <app-simulation-notice />
     </div>
   </section>`,
 })
@@ -373,9 +420,9 @@ export class OtpPage {
 
 @Component({
   selector: 'app-issued-page',
-  imports: [RouterLink, TranslocoPipe, SimulationNoticeComponent],
+  imports: [RouterLink, TranslocoPipe, PolicySealSceneComponent, SvgIconComponent],
   template: `<section class="success-page">
-    <div class="success-illustration">✓</div>
+    <app-policy-seal-scene />
     <span class="eyebrow">Solventa</span>
     <h1>{{ 'issued.title' | transloco }}</h1>
     <p>{{ 'issued.body' | transloco }}</p>
@@ -384,14 +431,12 @@ export class OtpPage {
       ><strong>{{ store.issuedPolicy()?.id }}</strong>
     </div>
     <div class="button-row centered">
-      <a class="button conversion" [routerLink]="['/app/policies', store.issuedPolicy()?.id]">{{
-        'issued.view' | transloco
-      }}</a
+      <a class="button conversion" [routerLink]="['/app/policies', store.issuedPolicy()?.id]"
+        >{{ 'issued.view' | transloco }}<app-icon name="policy" [size]="18" /></a
       ><a class="button secondary" routerLink="/app/dashboard">{{
         'issued.dashboard' | transloco
       }}</a>
     </div>
-    <app-simulation-notice />
   </section>`,
 })
 export class IssuedPage {

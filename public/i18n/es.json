@@ -17,6 +17,10 @@
     "utilityLabel": "Navegación de utilidades",
     "legalLabel": "Navegación legal"
   },
+  "theme": {
+    "toLight": "Cambiar a modo claro",
+    "toDark": "Cambiar a modo oscuro"
+  },
   "products": {
     "travel": "Viaje Internacional",
     "life": "Vida Protegida",
@@ -34,7 +38,6 @@
     "status": "Estado",
     "date": "Fecha",
     "amount": "Valor",
-    "simulated": "Esta operación es simulada para fines académicos. No produce efectos reales.",
     "success": "Operación completada",
     "empty": "No hay información para mostrar.",
     "required": "Este campo es obligatorio.",
@@ -55,8 +58,12 @@
     "lifeBody": "Respaldo para ti y las personas que más importan.",
     "device": "Dispositivos",
     "deviceBody": "Cobertura ante daño y hurto de tus equipos.",
+    "globeLabel": "Globo interactivo con rutas de viaje desde Bogotá hacia destinos internacionales.",
     "trustTitle": "Diseñado para darte claridad",
-    "trustBody": "Consulta coberturas, pagos y siniestros sin lenguaje complicado."
+    "trustBody": "Consulta coberturas, pagos y siniestros sin lenguaje complicado.",
+    "trustProtection": "Coberturas fáciles de entender",
+    "trustAnywhere": "Asistencia durante tu viaje",
+    "trustSupport": "Acompañamiento cuando lo necesitas"
   },
   "auth": {
     "title": "Bienvenida de nuevo",
@@ -122,7 +129,11 @@
     "dateError": "La fecha de regreso debe ser posterior a la salida.",
     "consent": "Usar señales simuladas de Open Finance para personalizar esta cotización.",
     "consentHint": "Puedes continuar sin autorizar; recibirás una cotización estándar.",
-    "calculate": "Ver planes"
+    "calculate": "Ver planes",
+    "routeEyebrow": "Vista del trayecto",
+    "routeTitle": "Tu ruta protegida",
+    "routeGraphic": "Ruta aérea desde Bogotá hasta el destino seleccionado",
+    "routeOrigin": "Origen"
   },
   "plans": {
     "title": "Elige tu plan",
@@ -171,7 +182,8 @@
     "body": "La póliza de Viaje Internacional quedó disponible en tu cuenta de demostración.",
     "policy": "Póliza",
     "view": "Ver póliza",
-    "dashboard": "Volver al inicio"
+    "dashboard": "Volver al inicio",
+    "visualLabel": "Sello tridimensional que confirma la emisión de la póliza."
   },
   "policies": {
     "title": "Mis pólizas",

@@ -1,1 +1,5 @@
-<router-outlet />
+@defer (on idle) {
+  <app-ambient-background />
+}
+<app-theme-toggle />
+<div class="application-layer"><router-outlet /></div>
