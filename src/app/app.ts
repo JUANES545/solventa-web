@@ -2,9 +2,10 @@ import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ThemeService } from './core/theme.service';
 import { TranslocoService } from '@jsverse/transloco';
+import { AmbientBackgroundComponent } from './shared/three/ambient-background.component';
 
 @Component({
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, AmbientBackgroundComponent],
   selector: 'app-root',
   styleUrl: './app.scss',
   templateUrl: './app.html',
