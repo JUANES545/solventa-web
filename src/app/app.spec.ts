@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter, RouterOutlet } from '@angular/router';
 import { By } from '@angular/platform-browser';
 import { TranslocoService } from '@jsverse/transloco';
+import { of } from 'rxjs';
 import { App } from './app';
 import { ThemeService } from './core/theme.service';
 
@@ -12,7 +13,16 @@ describe('App', () => {
       providers: [
         provideRouter([]),
         { provide: ThemeService, useValue: { preference: () => 'system' } },
-        { provide: TranslocoService, useValue: { getActiveLang: () => 'es' } },
+        {
+          provide: TranslocoService,
+          useValue: {
+            config: { reRenderOnLangChange: false },
+            getActiveLang: () => 'es',
+            langChanges$: of('es'),
+            translate: (key: string) => key,
+            _loadDependencies: () => of(true),
+          },
+        },
       ],
     }).compileComponents();
   });

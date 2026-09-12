@@ -188,12 +188,71 @@ app-ambient-background {
   z-index: 1;
 }
 
+app-theme-toggle {
+  position: fixed;
+  z-index: 1100;
+  top: 14px;
+  left: 14px;
+}
+.global-theme-toggle {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  position: relative;
+  padding: 0;
+  border: 1px solid color-mix(in srgb, var(--color-border) 38%, transparent);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--color-surface) 88%, transparent);
+  color: var(--color-primary);
+  box-shadow:
+    0 10px 28px rgb(4 25 48 / 15%),
+    inset 0 1px 0 color-mix(in srgb, #fff 72%, transparent);
+  backdrop-filter: blur(14px);
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.global-theme-toggle:hover {
+  transform: translateY(-2px) rotate(-3deg);
+  border-color: color-mix(in srgb, var(--color-conversion) 62%, transparent);
+  box-shadow:
+    0 14px 34px rgb(4 25 48 / 21%),
+    0 0 0 5px color-mix(in srgb, var(--color-conversion) 8%, transparent);
+}
+.global-theme-toggle:active {
+  transform: translateY(0) scale(0.95);
+}
+.theme-toggle-orbit {
+  position: absolute;
+  inset: 6px;
+  border: 1px solid color-mix(in srgb, var(--color-conversion) 34%, transparent);
+  border-radius: 50%;
+  transform: rotate(-24deg) scaleY(0.58);
+  transition: transform 0.45s ease;
+}
+.global-theme-toggle[aria-pressed='true'] .theme-toggle-orbit {
+  transform: rotate(26deg) scaleY(0.58);
+}
+.theme-toggle-icon {
+  display: grid;
+  place-items: center;
+  position: relative;
+  transition: transform 0.35s ease;
+}
+.global-theme-toggle[aria-pressed='true'] .theme-toggle-icon {
+  transform: rotate(90deg);
+}
+
 .skip-link {
   position: fixed;
   z-index: 1000;
-  top: 12px;
+  top: 70px;
   left: 12px;
-  transform: translateY(-160%);
+  transform: translateY(-260%);
   padding: 0.7rem 1rem;
   border-radius: 8px;
   background: var(--color-surface);
@@ -1724,6 +1783,9 @@ dd {
   justify-content: space-between;
   padding: 0 0.45rem 1.2rem;
 }
+.sidebar-header .brand {
+  margin-left: 3.25rem;
+}
 .main-nav,
 .sidebar-footer {
   display: grid;
@@ -1846,6 +1908,9 @@ dd {
   .mobile-only {
     display: inline-grid;
     place-items: center;
+  }
+  .app-header {
+    padding-left: 4.75rem;
   }
   .hero {
     grid-template-columns: 1fr;
@@ -1983,6 +2048,12 @@ dd {
     display: none;
   }
   .app-header {
-    padding: 0 1rem;
+    padding: 0 1rem 0 4.75rem;
+  }
+}
+
+@media (max-width: 1320px) {
+  .public-header .brand {
+    margin-left: 3.45rem;
   }
 }

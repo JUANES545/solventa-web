@@ -21,6 +21,7 @@ export type IconName =
   | 'location'
   | 'lock'
   | 'menu'
+  | 'moon'
   | 'network'
   | 'payment'
   | 'plane'
@@ -28,6 +29,7 @@ export type IconName =
   | 'settings'
   | 'shield'
   | 'sparkles'
+  | 'sun'
   | 'user';
 
 @Component({
@@ -95,6 +97,15 @@ export type IconName =
         }
         @case ('close') {
           <path d="m6 6 12 12M18 6 6 18" />
+        }
+        @case ('moon') {
+          <path d="M20.2 15.3A8.5 8.5 0 0 1 8.7 3.8 8.5 8.5 0 1 0 20.2 15.3Z" />
+        }
+        @case ('sun') {
+          <circle cx="12" cy="12" r="3.7" />
+          <path
+            d="M12 2.5V5M12 19v2.5M21.5 12H19M5 12H2.5M18.7 5.3 17 7M7 17l-1.7 1.7M18.7 18.7 17 17M7 7 5.3 5.3"
+          />
         }
         @case ('check') {
           <path d="m5 12 4.2 4.2L19 6.5" />

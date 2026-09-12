@@ -17,6 +17,10 @@
     "utilityLabel": "Navegación de utilidades",
     "legalLabel": "Navegación legal"
   },
+  "theme": {
+    "toLight": "Cambiar a modo claro",
+    "toDark": "Cambiar a modo oscuro"
+  },
   "products": {
     "travel": "Viaje Internacional",
     "life": "Vida Protegida",
