@@ -17,6 +17,10 @@ Solventa Web is a responsive Angular prototype for a digital insurance experienc
 Demo credentials: `demo@solventa.co` / `Solventa123`  
 Demo OTP: `123456`
 
+## Live prototype
+
+The stable release is published at [juanes545.github.io/solventa-web](https://juanes545.github.io/solventa-web/). GitHub Actions builds and deploys the application from `main` to GitHub Pages.
+
 ## Local setup
 
 Requirements: Node.js 22 or later and pnpm 11.

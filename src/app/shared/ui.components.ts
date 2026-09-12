@@ -7,7 +7,7 @@ import { SvgIconComponent } from './svg-icon.component';
   selector: 'app-loading-state',
   imports: [MatProgressSpinnerModule, TranslocoPipe],
   template: `<div class="state-card" role="status">
-    <mat-spinner diameter="34" />
+    <mat-spinner diameter="34" [attr.aria-label]="labelKey() | transloco" />
     <p>{{ labelKey() | transloco }}</p>
   </div>`,
 })

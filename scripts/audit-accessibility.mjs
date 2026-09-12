@@ -2,6 +2,7 @@ import AxeBuilder from '@axe-core/playwright';
 import { chromium } from 'playwright-core';
 
 const baseUrl = process.env['SOLVENTA_AUDIT_URL'] ?? 'http://localhost:4200';
+const appUrl = `${baseUrl.replace(/\/$/, '')}/#`;
 const chromePath =
   process.env['CHROME_PATH'] ?? 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
 
@@ -87,7 +88,7 @@ try {
       const routes = authenticated ? authenticatedRoutes : publicRoutes;
 
       for (const route of routes) {
-        await page.goto(`${baseUrl}${route}`, { waitUntil: 'networkidle' });
+        await page.goto(`${appUrl}${route}`, { waitUntil: 'networkidle' });
         await page.locator('body').waitFor({ state: 'visible' });
         checks += 1;
 
