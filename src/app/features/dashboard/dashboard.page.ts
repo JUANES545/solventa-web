@@ -69,7 +69,7 @@ import { ErrorStateComponent, LoadingStateComponent } from '../../shared/ui.comp
                     ><app-icon [name]="productIcons[policy.product]" [size]="20" /></span
                   ><span
                     ><strong>{{ 'products.' + policy.product | transloco }}</strong
-                    ><small>{{ policy.id }} · {{ policy.premiumCop | cop }}</small></span
+                    ><small>{{ policy.premiumCop | cop }}</small></span
                   ><span class="status" [class]="'status ' + policy.status">{{
                     'policies.' + policy.status | transloco
                   }}</span></a

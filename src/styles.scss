@@ -753,9 +753,6 @@ app-theme-toggle {
   border: 1px solid color-mix(in srgb, var(--color-primary) 16%, transparent);
   border-radius: 50%;
 }
-.feature-card:nth-child(2) {
-  margin-top: 1.4rem;
-}
 .feature-card:hover {
   border-color: color-mix(in srgb, var(--color-conversion) 52%, var(--color-border-soft));
   box-shadow: var(--shadow-depth);
@@ -2012,9 +2009,6 @@ dd {
   .policy-card-3d {
     min-height: 212px;
     padding: 1.05rem;
-  }
-  .feature-card:nth-child(2) {
-    margin-top: 0;
   }
   .trust-list {
     display: grid;

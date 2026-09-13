@@ -48,7 +48,6 @@ import { ErrorStateComponent, LoadingStateComponent } from '../../shared/ui.comp
               }}</span>
             </div>
             <h2>{{ 'products.' + policy.product | transloco }}</h2>
-            <p class="mono">{{ policy.id }}</p>
             <dl class="inline-details">
               <div>
                 <dt>{{ 'policies.premium' | transloco }}</dt>
