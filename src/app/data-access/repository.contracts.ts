@@ -1,5 +1,11 @@
 import { Observable } from 'rxjs';
 import {
+  AdvisorCustomer,
+  AdvisorCustomerSummary,
+  AppSession,
+  AssistedQuote,
+  AssistedQuoteDraft,
+  AssistedQuoteStatus,
   Claim,
   ClaimDraft,
   ConsentRecord,
@@ -12,9 +18,21 @@ import {
 } from '../models/domain.models';
 
 export interface AuthenticationRepository {
-  login(email: string, password: string): Observable<Customer>;
-  loginAsDemo(): Observable<Customer>;
+  login(email: string, password: string): Observable<AppSession>;
+  loginAsDemo(): Observable<AppSession>;
   requestPasswordReset(email: string): Observable<void>;
+}
+
+export interface AdvisorCustomerRepository {
+  search(query: string): Observable<AdvisorCustomer[]>;
+  getSummary(customerId: string): Observable<AdvisorCustomerSummary | undefined>;
+}
+
+export interface AssistedQuoteRepository {
+  listByAdvisor(advisorId: string): Observable<AssistedQuote[]>;
+  listByCustomer(customerId: string): Observable<AssistedQuote[]>;
+  save(draft: AssistedQuoteDraft): Observable<AssistedQuote>;
+  updateStatus(id: string, status: AssistedQuoteStatus): Observable<AssistedQuote>;
 }
 
 export interface CustomerRepository {

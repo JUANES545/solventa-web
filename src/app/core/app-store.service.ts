@@ -11,6 +11,7 @@ import {
   QUOTE_REPOSITORY,
 } from '../data-access/repository.tokens';
 import {
+  AppSession,
   Claim,
   ClaimDraft,
   ConsentRecord,
@@ -36,8 +37,17 @@ export class AppStore {
   private readonly paymentRepository = inject(PAYMENT_REPOSITORY);
   private readonly notificationRepository = inject(NOTIFICATION_REPOSITORY);
 
-  readonly customer = signal<Customer | null>(this.restoreCustomer());
-  readonly authenticated = computed(() => this.customer() !== null);
+  readonly session = signal<AppSession | null>(this.restoreSession());
+  readonly authenticated = computed(() => this.session() !== null);
+  readonly role = computed(() => this.session()?.role ?? null);
+  readonly customer = computed(() => {
+    const session = this.session();
+    return session?.role === 'CLIENT' ? session.profile : null;
+  });
+  readonly advisor = computed(() => {
+    const session = this.session();
+    return session?.role === 'ADVISOR' ? session.profile : null;
+  });
   readonly registrationCustomer = signal<Customer | null>(null);
   readonly consent = signal<ConsentRecord | null>(null);
   readonly travelDetails = signal<TravelDetails | null>(this.restoreQuote());
@@ -55,14 +65,14 @@ export class AppStore {
     () => this.notifications().filter((item) => !item.read).length,
   );
 
-  login(email: string, password: string): Observable<Customer> {
+  login(email: string, password: string): Observable<AppSession> {
     return this.authRepository
       .login(email, password)
-      .pipe(tap((customer) => this.startSession(customer)));
+      .pipe(tap((session) => this.startSession(session)));
   }
 
-  loginAsDemo(): Observable<Customer> {
-    return this.authRepository.loginAsDemo().pipe(tap((customer) => this.startSession(customer)));
+  loginAsDemo(): Observable<AppSession> {
+    return this.authRepository.loginAsDemo().pipe(tap((session) => this.startSession(session)));
   }
 
   requestPasswordReset(email: string): Observable<void> {
@@ -85,7 +95,7 @@ export class AppStore {
     return this.customerRepository.completeKyc(customer).pipe(
       tap((value) => {
         this.registrationCustomer.set(value);
-        this.startSession(value);
+        this.startSession({ role: 'CLIENT', profile: value });
       }),
     );
   }
@@ -183,7 +193,7 @@ export class AppStore {
   }
 
   logout(): void {
-    this.customer.set(null);
+    this.session.set(null);
     this.registrationCustomer.set(null);
     this.consent.set(null);
     this.travelDetails.set(null);
@@ -197,14 +207,18 @@ export class AppStore {
     sessionStorage.removeItem(QUOTE_KEY);
   }
 
-  private startSession(customer: Customer): void {
-    this.customer.set(customer);
-    sessionStorage.setItem(SESSION_KEY, JSON.stringify(customer));
+  private startSession(session: AppSession): void {
+    this.session.set(session);
+    sessionStorage.setItem(SESSION_KEY, JSON.stringify(session));
   }
 
-  private restoreCustomer(): Customer | null {
+  private restoreSession(): AppSession | null {
     try {
-      return JSON.parse(sessionStorage.getItem(SESSION_KEY) ?? 'null') as Customer | null;
+      const stored = JSON.parse(sessionStorage.getItem(SESSION_KEY) ?? 'null') as
+        AppSession | Customer | null;
+      if (!stored) return null;
+      if ('role' in stored && 'profile' in stored) return stored;
+      return { role: 'CLIENT', profile: stored };
     } catch {
       return null;
     }

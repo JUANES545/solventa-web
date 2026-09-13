@@ -1,6 +1,9 @@
 import { Routes } from '@angular/router';
 import {
+  advisorClientGuard,
+  advisorGuard,
   authGuard,
+  clientGuard,
   guestGuard,
   issuedGuard,
   paymentGuard,
@@ -72,7 +75,7 @@ export const routes: Routes = [
   },
   {
     path: 'app',
-    canActivate: [authGuard],
+    canActivate: [authGuard, clientGuard],
     loadComponent: () => import('./layout/app-shell.component').then((m) => m.AppShellComponent),
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
@@ -170,6 +173,46 @@ export const routes: Routes = [
         loadComponent: () => import('./features/public/public.pages').then((m) => m.HelpPage),
       },
       ...developmentRoutes,
+    ],
+  },
+  {
+    path: 'advisor',
+    canActivate: [authGuard, advisorGuard],
+    loadComponent: () =>
+      import('./layout/advisor-shell.component').then((m) => m.AdvisorShellComponent),
+    children: [
+      { path: '', pathMatch: 'full', redirectTo: 'dashboard' },
+      {
+        path: 'dashboard',
+        title: 'Solventa · Advisor dashboard',
+        loadComponent: () =>
+          import('./features/advisor/advisor.pages').then((m) => m.AdvisorDashboardPage),
+      },
+      {
+        path: 'clients',
+        title: 'Solventa · Advisor clients',
+        loadComponent: () =>
+          import('./features/advisor/advisor.pages').then((m) => m.AdvisorClientsPage),
+      },
+      {
+        path: 'clients/:id',
+        title: 'Solventa · Advisor client',
+        loadComponent: () =>
+          import('./features/advisor/advisor.pages').then((m) => m.AdvisorClientDetailPage),
+      },
+      {
+        path: 'quote',
+        canActivate: [advisorClientGuard],
+        title: 'Solventa · Assisted quote',
+        loadComponent: () =>
+          import('./features/advisor/advisor.pages').then((m) => m.AssistedQuotePage),
+      },
+      {
+        path: 'quotes',
+        title: 'Solventa · Assisted quotes',
+        loadComponent: () =>
+          import('./features/advisor/advisor.pages').then((m) => m.AssistedQuotesPage),
+      },
     ],
   },
   {

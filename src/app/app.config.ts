@@ -6,6 +6,8 @@ import { routes } from './app.routes';
 import { SolventaTranslocoLoader } from './core/transloco-loader';
 import { LocalizedTitleStrategy } from './core/localized-title.strategy';
 import {
+  MockAdvisorCustomerRepository,
+  MockAssistedQuoteRepository,
   MockAuthenticationRepository,
   MockClaimRepository,
   MockConsentRepository,
@@ -16,6 +18,8 @@ import {
   MockQuoteRepository,
 } from './data-access/mock/mock.repositories';
 import {
+  ADVISOR_CUSTOMER_REPOSITORY,
+  ASSISTED_QUOTE_REPOSITORY,
   AUTHENTICATION_REPOSITORY,
   CLAIM_REPOSITORY,
   CONSENT_REPOSITORY,
@@ -42,6 +46,8 @@ export const appConfig: ApplicationConfig = {
       },
       loader: SolventaTranslocoLoader,
     }),
+    { provide: ADVISOR_CUSTOMER_REPOSITORY, useClass: MockAdvisorCustomerRepository },
+    { provide: ASSISTED_QUOTE_REPOSITORY, useClass: MockAssistedQuoteRepository },
     { provide: AUTHENTICATION_REPOSITORY, useClass: MockAuthenticationRepository },
     { provide: CUSTOMER_REPOSITORY, useClass: MockCustomerRepository },
     { provide: CONSENT_REPOSITORY, useClass: MockConsentRepository },

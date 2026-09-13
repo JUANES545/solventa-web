@@ -4,6 +4,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { AppStore } from '../../core/app-store.service';
 import { SvgIconComponent } from '../../shared/svg-icon.component';
+import { postLoginRoute } from '../../core/session-routing';
 
 @Component({
   selector: 'app-login-page',
@@ -60,6 +61,7 @@ import { SvgIconComponent } from '../../shared/svg-icon.component';
           {{ 'auth.demo' | transloco }}
         </button>
         <p class="demo-hint">{{ 'auth.demoHint' | transloco }}</p>
+        <p class="demo-hint">{{ 'auth.advisorDemoHint' | transloco }}</p>
         <div class="auth-links">
           <a routerLink="/recover-password">{{ 'auth.forgot' | transloco }}</a
           ><a routerLink="/register">{{ 'auth.register' | transloco }}</a>
@@ -118,8 +120,7 @@ export class LoginPage {
   }
   private goAfterLogin(): void {
     const requested = this.route.snapshot.queryParamMap.get('returnUrl');
-    const destination = requested?.startsWith('/app/') ? requested : '/app/dashboard';
-    void this.router.navigateByUrl(destination);
+    void this.router.navigateByUrl(postLoginRoute(this.store.role(), requested));
   }
 }
 
