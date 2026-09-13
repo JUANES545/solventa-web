@@ -11,13 +11,13 @@
 
 ## Application layers
 
-`features` contains page-level journeys. `layout` contains the public frame and authenticated shell. `core` coordinates session, state, guards, theme, and localized titles. `data-access` defines repository contracts and supplies mock implementations. `shared` contains reusable presentation components and formatters.
+`features` contains the client and advisor page-level journeys. `layout` contains the public frame plus separate client and advisor shells. `core` coordinates role-aware sessions, state, guards, the advisor facade, theme, and localized titles. `data-access` defines repository contracts and supplies mock implementations. `shared` contains reusable presentation components and formatters, including the travel details and plan comparison surfaces used by both roles.
 
 Pages depend on injection tokens rather than mock classes. A future API adapter can therefore replace each mock repository without changing feature components.
 
 ## State and persistence
 
-`AppStore` is the orchestration boundary for the prototype. It uses Angular signals for current customer, quote, selected plan, policy, claims, payments, and notifications. Browser storage is intentionally limited to session, onboarding completion, language, and theme preferences.
+`AppStore` is the orchestration boundary for authentication and the client portal. Its session is a discriminated `CLIENT | ADVISOR` model. `AdvisorFacade` owns the selected-client context, portfolio state, assisted quote flow, and quote traceability. Browser storage is limited to session, selected advisor context, in-progress client quote data, language, and theme preferences.
 
 ## Internationalization
 
@@ -25,8 +25,8 @@ All interface labels come from the Spanish and English Transloco dictionaries. L
 
 ## Mock behavior
 
-Repositories return RxJS observables with realistic delays and deterministic records. `TestScenarioService` switches data and failures for review. Its route is supplied through a development-only route file that Angular replaces with an empty production module.
+Repositories return RxJS observables with realistic delays and deterministic records. Separate advisor customer and assisted quote contracts keep the screens independent from their mock implementations and ready for future HTTP adapters. `TestScenarioService` switches data and failures for review. Its route is supplied through a development-only route file that Angular replaces with an empty production module.
 
 ## Security boundary
 
-Authentication, KYC, payment, OTP, documents, and policy issuance are demonstrations only. No secret, payment credential, identity document, or regulated decision is processed or stored.
+Role guards isolate `/app` client routes from `/advisor` routes. The advisor can record consent supplied directly by a client but cannot grant it on the client's behalf, process payment, issue policies, approve claims, or access operations and partner administration. Authentication, KYC, payment, OTP, documents, and policy issuance are demonstrations only. No secret, payment credential, identity document, or regulated decision is processed or stored.

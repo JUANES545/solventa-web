@@ -1,6 +1,8 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AppStore } from './app-store.service';
+import { AdvisorFacade } from './advisor.facade';
+import { homeRouteForRole } from './session-routing';
 import { TestScenarioService } from '../testing/test-scenario.service';
 
 export const authGuard: CanActivateFn = (_route, state) => {
@@ -22,7 +24,27 @@ export const authGuard: CanActivateFn = (_route, state) => {
 
 export const guestGuard: CanActivateFn = () => {
   const store = inject(AppStore);
-  return !store.authenticated() || inject(Router).createUrlTree(['/app/dashboard']);
+  if (!store.authenticated()) return true;
+  return inject(Router).createUrlTree([homeRouteForRole(store.role())]);
+};
+
+export const clientGuard: CanActivateFn = () => {
+  const store = inject(AppStore);
+  if (store.role() === 'CLIENT') return true;
+  return inject(Router).createUrlTree([
+    store.role() === 'ADVISOR' ? '/advisor/dashboard' : '/access',
+  ]);
+};
+
+export const advisorGuard: CanActivateFn = () => {
+  const store = inject(AppStore);
+  if (store.role() === 'ADVISOR') return true;
+  return inject(Router).createUrlTree([store.role() === 'CLIENT' ? '/app/dashboard' : '/access']);
+};
+
+export const advisorClientGuard: CanActivateFn = () => {
+  const advisor = inject(AdvisorFacade);
+  return advisor.selectedCustomer() !== null || inject(Router).createUrlTree(['/advisor/clients']);
 };
 
 export const registrationGuard: CanActivateFn = () => {

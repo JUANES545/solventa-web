@@ -1,6 +1,8 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { Observable, delay, of, switchMap, throwError } from 'rxjs';
 import {
+  AdvisorCustomerRepository,
+  AssistedQuoteRepository,
   AuthenticationRepository,
   ClaimRepository,
   ConsentRepository,
@@ -11,6 +13,13 @@ import {
   QuoteRepository,
 } from '../repository.contracts';
 import {
+  AdvisorCustomer,
+  AdvisorCustomerSummary,
+  AdvisorProfile,
+  AppSession,
+  AssistedQuote,
+  AssistedQuoteDraft,
+  AssistedQuoteStatus,
   Claim,
   ClaimDraft,
   ConsentRecord,
@@ -36,6 +45,51 @@ export const DEMO_CUSTOMER: Customer = {
   documentNumber: '1020304050',
   kycStatus: 'approved',
 };
+
+export const DEMO_ADVISOR: AdvisorProfile = {
+  id: 'advisor-demo',
+  fullName: 'Laura Martínez',
+  email: 'asesor@solventa.co',
+  role: 'ADVISOR',
+};
+
+export const ADVISOR_CUSTOMERS: AdvisorCustomer[] = [
+  { ...DEMO_CUSTOMER, consentStatus: 'recorded', nextRenewalDate: '2026-10-19' },
+  {
+    id: 'customer-ana',
+    fullName: 'Ana Torres',
+    email: 'ana.torres@example.com',
+    documentNumber: '52110487',
+    kycStatus: 'approved',
+    consentStatus: 'recorded',
+    nextRenewalDate: '2026-11-18',
+  },
+  {
+    id: 'customer-mateo',
+    fullName: 'Mateo Restrepo',
+    email: 'mateo.restrepo@example.com',
+    documentNumber: '1018427391',
+    kycStatus: 'pending',
+    consentStatus: 'pending',
+  },
+  {
+    id: 'customer-camila',
+    fullName: 'Camila Rojas',
+    email: 'camila.rojas@example.com',
+    documentNumber: '1032456798',
+    kycStatus: 'approved',
+    consentStatus: 'pending',
+    nextRenewalDate: '2026-10-08',
+  },
+  {
+    id: 'customer-daniel',
+    fullName: 'Daniel Ruiz',
+    email: 'daniel.ruiz@example.com',
+    documentNumber: '80145672',
+    kycStatus: 'approved',
+    consentStatus: 'recorded',
+  },
+];
 
 const PLANS: TravelPlan[] = [
   {
@@ -102,6 +156,99 @@ const INITIAL_POLICIES: Policy[] = [
     validFrom: '2025-01-01',
     validUntil: '2026-01-01',
     coverageKeys: ['rainfall'],
+  },
+];
+
+const CUSTOMER_POLICY_SUMMARIES: Record<string, AdvisorCustomerSummary['policies']> = {
+  'customer-demo': INITIAL_POLICIES.slice(0, 2).map(({ id, product, status, validUntil }) => ({
+    id,
+    product,
+    status,
+    validUntil,
+  })),
+  'customer-ana': [
+    {
+      id: 'SOL-TRV-2026-2044',
+      product: 'travel',
+      status: 'active',
+      validUntil: '2026-11-18',
+    },
+  ],
+  'customer-mateo': [],
+  'customer-camila': [
+    {
+      id: 'SOL-DEV-2026-0318',
+      product: 'device',
+      status: 'expiring',
+      validUntil: '2026-10-08',
+    },
+  ],
+  'customer-daniel': [
+    {
+      id: 'SOL-LIF-2026-0921',
+      product: 'life',
+      status: 'active',
+      validUntil: '2027-04-21',
+    },
+  ],
+};
+
+const INITIAL_ASSISTED_QUOTES: AssistedQuote[] = [
+  {
+    id: 'COT-2026-0391',
+    customerId: 'customer-demo',
+    customerName: 'Valentina Gómez',
+    advisorId: DEMO_ADVISOR.id,
+    advisorName: DEMO_ADVISOR.fullName,
+    travelDetails: {
+      destination: 'España',
+      departureDate: '2026-10-04',
+      returnDate: '2026-10-19',
+      travelers: 1,
+    },
+    planId: 'plus',
+    priceCop: 139900,
+    consentRecorded: true,
+    consentChannel: 'clientPortal',
+    status: 'sentToClient',
+    createdAt: '2026-09-11',
+  },
+  {
+    id: 'COT-2026-0387',
+    customerId: 'customer-mateo',
+    customerName: 'Mateo Restrepo',
+    advisorId: DEMO_ADVISOR.id,
+    advisorName: DEMO_ADVISOR.fullName,
+    travelDetails: {
+      destination: 'México',
+      departureDate: '2026-11-12',
+      returnDate: '2026-11-20',
+      travelers: 2,
+    },
+    planId: 'essential',
+    priceCop: 89900,
+    consentRecorded: false,
+    status: 'pendingConsent',
+    createdAt: '2026-09-10',
+  },
+  {
+    id: 'COT-2026-0379',
+    customerId: 'customer-ana',
+    customerName: 'Ana Torres',
+    advisorId: DEMO_ADVISOR.id,
+    advisorName: DEMO_ADVISOR.fullName,
+    travelDetails: {
+      destination: 'Argentina',
+      departureDate: '2026-10-21',
+      returnDate: '2026-10-29',
+      travelers: 1,
+    },
+    planId: 'premium',
+    priceCop: 219900,
+    consentRecorded: true,
+    consentChannel: 'recordedCall',
+    status: 'readyToSubscribe',
+    createdAt: '2026-09-08',
   },
 ];
 
@@ -197,20 +344,106 @@ export class MockAuthenticationRepository
   extends MockRepositoryBase
   implements AuthenticationRepository
 {
-  login(email: string, password: string): Observable<Customer> {
-    if (email.toLowerCase() !== 'demo@solventa.co' || password !== 'Solventa123') {
+  login(email: string, password: string): Observable<AppSession> {
+    const normalizedEmail = email.trim().toLowerCase();
+    if (password === 'Solventa123' && normalizedEmail === DEMO_ADVISOR.email) {
+      return this.respond({ role: 'ADVISOR', profile: DEMO_ADVISOR });
+    }
+    if (normalizedEmail !== DEMO_CUSTOMER.email || password !== 'Solventa123') {
       return of(null).pipe(
         delay(this.scenarios.delay()),
         switchMap(() => throwError(() => new InvalidCredentialsError())),
       );
     }
-    return this.respond(DEMO_CUSTOMER);
+    return this.respond({ role: 'CLIENT', profile: DEMO_CUSTOMER });
   }
-  loginAsDemo(): Observable<Customer> {
-    return this.respond(DEMO_CUSTOMER);
+  loginAsDemo(): Observable<AppSession> {
+    return this.respond({ role: 'CLIENT', profile: DEMO_CUSTOMER });
   }
   requestPasswordReset(_email: string): Observable<void> {
     return this.respond(undefined);
+  }
+}
+
+@Injectable()
+export class MockAdvisorCustomerRepository
+  extends MockRepositoryBase
+  implements AdvisorCustomerRepository
+{
+  search(query: string): Observable<AdvisorCustomer[]> {
+    if (this.scenarios.current() === 'empty') return this.respond([]);
+    const normalizedQuery = this.normalize(query);
+    const matches = !normalizedQuery
+      ? ADVISOR_CUSTOMERS
+      : ADVISOR_CUSTOMERS.filter((customer) =>
+          [customer.fullName, customer.email, customer.documentNumber].some((value) =>
+            this.normalize(value).includes(normalizedQuery),
+          ),
+        );
+    return this.respond(structuredClone(matches));
+  }
+
+  getSummary(customerId: string): Observable<AdvisorCustomerSummary | undefined> {
+    const customer = ADVISOR_CUSTOMERS.find((item) => item.id === customerId);
+    if (!customer || this.scenarios.current() === 'empty') return this.respond(undefined);
+    return this.respond({
+      customer: structuredClone(customer),
+      policies: structuredClone(CUSTOMER_POLICY_SUMMARIES[customerId] ?? []),
+    });
+  }
+
+  private normalize(value: string): string {
+    return value
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .trim()
+      .toLowerCase();
+  }
+}
+
+@Injectable()
+export class MockAssistedQuoteRepository
+  extends MockRepositoryBase
+  implements AssistedQuoteRepository
+{
+  private readonly quotes = signal<AssistedQuote[]>(structuredClone(INITIAL_ASSISTED_QUOTES));
+  private sequence = 394;
+
+  listByAdvisor(advisorId: string): Observable<AssistedQuote[]> {
+    const matches = this.quotes().filter((quote) => quote.advisorId === advisorId);
+    return this.respond(this.scenarios.current() === 'empty' ? [] : structuredClone(matches));
+  }
+
+  listByCustomer(customerId: string): Observable<AssistedQuote[]> {
+    const matches = this.quotes().filter((quote) => quote.customerId === customerId);
+    return this.respond(this.scenarios.current() === 'empty' ? [] : structuredClone(matches));
+  }
+
+  save(draft: AssistedQuoteDraft): Observable<AssistedQuote> {
+    const quote: AssistedQuote = {
+      id: `COT-2026-${String(this.sequence++).padStart(4, '0')}`,
+      customerId: draft.customerId,
+      customerName: draft.customerName,
+      advisorId: draft.advisorId,
+      advisorName: draft.advisorName,
+      travelDetails: structuredClone(draft.travelDetails),
+      planId: draft.plan.id,
+      priceCop: draft.plan.priceCop,
+      consentRecorded: draft.consentRecorded,
+      consentChannel: draft.consentChannel,
+      status: draft.consentRecorded ? 'active' : 'pendingConsent',
+      createdAt: '2026-09-13',
+    };
+    this.quotes.update((items) => [quote, ...items]);
+    return this.respond(structuredClone(quote));
+  }
+
+  updateStatus(id: string, status: AssistedQuoteStatus): Observable<AssistedQuote> {
+    const current = this.quotes().find((quote) => quote.id === id);
+    if (!current) return throwError(() => new Error('Assisted quote not found'));
+    const updated = { ...current, status };
+    this.quotes.update((items) => items.map((quote) => (quote.id === id ? updated : quote)));
+    return this.respond(structuredClone(updated));
   }
 }
 

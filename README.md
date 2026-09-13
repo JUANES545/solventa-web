@@ -1,6 +1,6 @@
 # Solventa Web
 
-Solventa Web is a responsive Angular prototype for a digital insurance experience. The Week 6 release focuses on one complete, navigable customer journey backed by deterministic mock repositories.
+Solventa Web is a responsive Angular prototype for a multi-role digital insurance experience. It includes a complete customer journey and an assisted-sales workspace backed by deterministic mock repositories.
 
 ## Included flow
 
@@ -13,9 +13,12 @@ Solventa Web is a responsive Angular prototype for a digital insurance experienc
 - Spanish and English with Transloco and locale-aware `Intl` formatting
 - Light, dark, and system themes with responsive and accessible layouts
 - Development-only test scenarios for empty, error, slow, expired-session, and rejected-operation states
+- Role-based access for client and advisor sessions
+- Advisor dashboard, searchable client portfolio, client records, assisted travel quotes, consent tracking, and quote history
 
-Demo credentials: `demo@solventa.co` / `Solventa123`  
-Demo OTP: `123456`
+- Client credentials: `demo@solventa.co` / `Solventa123`
+- Advisor credentials: `asesor@solventa.co` / `Solventa123`
+- Demo OTP: `123456`
 
 ## Live prototype
 
@@ -36,13 +39,14 @@ Open `http://localhost:4200`. The development scenario panel is available at `/a
 
 ```bash
 pnpm test:ci
+pnpm lint
 pnpm audit:a11y
 pnpm build
 pnpm build:dev
 pnpm format:check
 ```
 
-Run `pnpm audit:a11y` while the development server is available at `http://localhost:4200`. The audit checks the main public and authenticated routes in both light and dark themes with WCAG A/AA rules.
+Run `pnpm audit:a11y` while the development server is available at `http://localhost:4200`. The audit checks the main public, client, and advisor routes in both light and dark themes with WCAG A/AA rules.
 
 ## Project notes
 

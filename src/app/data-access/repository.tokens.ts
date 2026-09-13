@@ -1,5 +1,7 @@
 import { InjectionToken } from '@angular/core';
 import {
+  AdvisorCustomerRepository,
+  AssistedQuoteRepository,
   AuthenticationRepository,
   ClaimRepository,
   ConsentRepository,
@@ -9,6 +11,13 @@ import {
   PolicyRepository,
   QuoteRepository,
 } from './repository.contracts';
+
+export const ADVISOR_CUSTOMER_REPOSITORY = new InjectionToken<AdvisorCustomerRepository>(
+  'ADVISOR_CUSTOMER_REPOSITORY',
+);
+export const ASSISTED_QUOTE_REPOSITORY = new InjectionToken<AssistedQuoteRepository>(
+  'ASSISTED_QUOTE_REPOSITORY',
+);
 
 export const AUTHENTICATION_REPOSITORY = new InjectionToken<AuthenticationRepository>(
   'AUTHENTICATION_REPOSITORY',
