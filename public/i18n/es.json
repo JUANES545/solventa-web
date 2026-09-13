@@ -73,6 +73,7 @@
     "signIn": "Iniciar sesión",
     "demo": "Ingresar como usuario de prueba",
     "demoHint": "Demo: demo@solventa.co / Solventa123",
+    "advisorDemoHint": "Asesor: asesor@solventa.co / Solventa123",
     "forgot": "Olvidé mi contraseña",
     "register": "Crear una cuenta",
     "invalid": "El correo o la contraseña no coinciden con la cuenta demo.",
@@ -281,6 +282,106 @@
     "light": "Claro",
     "dark": "Oscuro",
     "saved": "La preferencia se guarda en este navegador."
+  },
+  "advisor": {
+    "role": "Portal del asesor",
+    "nav": {
+      "clients": "Clientes",
+      "quotes": "Cotizaciones"
+    },
+    "context": {
+      "attending": "Atendiendo a",
+      "view": "Ver ficha",
+      "close": "Cerrar contexto del cliente"
+    },
+    "dashboard": {
+      "eyebrow": "Venta asistida",
+      "title": "Panel del asesor",
+      "subtitle": "Gestiona clientes y cotizaciones sin salir del contexto comercial.",
+      "clientsAttended": "Clientes atendidos",
+      "activeQuotes": "Cotizaciones activas",
+      "pendingConsent": "Pendientes de consentimiento",
+      "upcomingRenewals": "Próximas renovaciones",
+      "recentQuotes": "Cotizaciones recientes",
+      "nextTitle": "Inicia desde el cliente",
+      "nextBody": "Busca a la persona, revisa su información y abre una cotización con el contexto correcto."
+    },
+    "clients": {
+      "eyebrow": "Cartera comercial",
+      "title": "Clientes",
+      "subtitle": "Busca por nombre, documento o correo electrónico.",
+      "find": "Buscar cliente",
+      "searchLabel": "Buscar cliente",
+      "searchPlaceholder": "Nombre, documento o correo",
+      "search": "Buscar",
+      "clear": "Limpiar",
+      "loading": "Cargando clientes…",
+      "empty": "No encontramos clientes con esos datos.",
+      "open": "Abrir ficha",
+      "renewal": "Próxima renovación",
+      "back": "Volver a clientes",
+      "loadingDetail": "Cargando ficha del cliente…",
+      "notFound": "No encontramos este cliente.",
+      "record": "Ficha del cliente",
+      "recordSubtitle": "Información necesaria para acompañar la venta.",
+      "basicData": "Datos básicos",
+      "verifications": "Identidad y consentimiento",
+      "currentPolicies": "Pólizas vigentes",
+      "recentQuotes": "Cotizaciones recientes",
+      "noPolicies": "Este cliente no tiene pólizas vigentes.",
+      "noQuotes": "Este cliente no tiene cotizaciones recientes."
+    },
+    "kyc": {
+      "approved": "Verificada",
+      "pending": "Pendiente",
+      "failed": "Requiere revisión"
+    },
+    "consent": {
+      "label": "Consentimiento",
+      "recorded": "Registrado",
+      "pending": "Pendiente"
+    },
+    "quote": {
+      "eyebrow": "Cotización asistida",
+      "title": "Seguro de viaje",
+      "subtitle": "Preparando una cotización para {{name}}.",
+      "start": "Nueva cotización",
+      "tripTitle": "Datos del viaje",
+      "tripBody": "Completa la misma información utilizada en el portal del cliente.",
+      "compare": "Comparar planes",
+      "plansTitle": "Comparación de planes",
+      "choose": "Elegir este plan",
+      "consentTitle": "Consentimiento y guardado",
+      "consentBody": "Registra si el cliente ya expresó su autorización y guarda la oferta.",
+      "consentNotice": "El asesor solo registra una autorización otorgada directamente por el cliente. No puede concederla en su nombre.",
+      "consentConfirmed": "El cliente confirmó directamente su consentimiento.",
+      "consentConfirmedHint": "Marca esta opción únicamente después de recibir la autorización del cliente.",
+      "channel": "Canal de confirmación",
+      "clientPortal": "Confirmación en el portal del cliente",
+      "recordedCall": "Llamada registrada",
+      "save": "Guardar cotización",
+      "saveError": "No pudimos guardar o actualizar la cotización.",
+      "summary": "Resumen de la oferta",
+      "savedEyebrow": "Cotización registrada",
+      "savedTitle": "La oferta quedó guardada",
+      "savedBody": "La cotización {{id}} conserva el asesor y el cliente asociados.",
+      "continueSubscription": "Preparar suscripción",
+      "sendToClient": "Entregar al cliente"
+    },
+    "quotes": {
+      "eyebrow": "Trazabilidad comercial",
+      "title": "Historial de cotizaciones",
+      "subtitle": "Consulta las ofertas creadas mediante venta asistida.",
+      "viewAll": "Ver historial",
+      "empty": "Todavía no hay cotizaciones asistidas.",
+      "audit": "Registrada por {{advisor}} para {{customer}}."
+    },
+    "status": {
+      "active": "Activa",
+      "pendingConsent": "Pendiente de consentimiento",
+      "sentToClient": "Entregada al cliente",
+      "readyToSubscribe": "Lista para suscripción"
+    }
   },
   "help": {
     "title": "¿Cómo podemos ayudarte?",

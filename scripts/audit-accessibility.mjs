@@ -14,6 +14,18 @@ const customer = {
   kycStatus: 'approved',
 };
 
+const advisor = {
+  id: 'advisor-demo',
+  fullName: 'Laura Martínez',
+  email: 'asesor@solventa.co',
+  role: 'ADVISOR',
+};
+
+const advisorCustomerContext = {
+  id: customer.id,
+  fullName: customer.fullName,
+};
+
 const quote = {
   destination: 'España',
   departureDate: '2026-10-04',
@@ -46,6 +58,14 @@ const authenticatedRoutes = [
   '/app/help',
 ];
 
+const advisorRoutes = [
+  '/advisor/dashboard',
+  '/advisor/clients',
+  '/advisor/clients/customer-demo',
+  '/advisor/quote',
+  '/advisor/quotes',
+];
+
 const browser = await chromium.launch({
   executablePath: chromePath,
   headless: true,
@@ -57,7 +77,7 @@ let checks = 0;
 
 try {
   for (const theme of ['light', 'dark']) {
-    for (const authenticated of [false, true]) {
+    for (const persona of ['public', 'client', 'advisor']) {
       const context = await browser.newContext({
         colorScheme: theme,
         reducedMotion: 'reduce',
@@ -65,31 +85,59 @@ try {
       });
 
       await context.addInitScript(
-        ({ selectedTheme, demoCustomer, demoQuote, hasSession }) => {
+        ({
+          selectedTheme,
+          demoCustomer,
+          demoAdvisor,
+          demoQuote,
+          advisorContext,
+          activePersona,
+        }) => {
           localStorage.setItem('solventa.theme', selectedTheme);
           localStorage.setItem('solventa.language', 'es');
-          if (hasSession) {
-            sessionStorage.setItem('solventa.demo.session', JSON.stringify(demoCustomer));
+          if (activePersona === 'client') {
+            sessionStorage.setItem(
+              'solventa.demo.session',
+              JSON.stringify({ role: 'CLIENT', profile: demoCustomer }),
+            );
             sessionStorage.setItem('solventa.demo.quote', JSON.stringify(demoQuote));
+          } else if (activePersona === 'advisor') {
+            sessionStorage.setItem(
+              'solventa.demo.session',
+              JSON.stringify({ role: 'ADVISOR', profile: demoAdvisor }),
+            );
+            sessionStorage.setItem(
+              'solventa.advisor.client-context',
+              JSON.stringify(advisorContext),
+            );
           } else {
             sessionStorage.removeItem('solventa.demo.session');
             sessionStorage.removeItem('solventa.demo.quote');
+            sessionStorage.removeItem('solventa.advisor.client-context');
           }
         },
         {
           selectedTheme: theme,
           demoCustomer: customer,
+          demoAdvisor: advisor,
           demoQuote: quote,
-          hasSession: authenticated,
+          advisorContext: advisorCustomerContext,
+          activePersona: persona,
         },
       );
 
       const page = await context.newPage();
-      const routes = authenticated ? authenticatedRoutes : publicRoutes;
+      const routes =
+        persona === 'client'
+          ? authenticatedRoutes
+          : persona === 'advisor'
+            ? advisorRoutes
+            : publicRoutes;
 
       for (const route of routes) {
         await page.goto(`${appUrl}${route}`, { waitUntil: 'networkidle' });
         await page.locator('body').waitFor({ state: 'visible' });
+        await page.waitForTimeout(550);
         checks += 1;
 
         const results = await new AxeBuilder({ page })

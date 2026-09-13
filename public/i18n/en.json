@@ -73,6 +73,7 @@
     "signIn": "Sign in",
     "demo": "Enter as test user",
     "demoHint": "Demo: demo@solventa.co / Solventa123",
+    "advisorDemoHint": "Advisor: asesor@solventa.co / Solventa123",
     "forgot": "I forgot my password",
     "register": "Create an account",
     "invalid": "The email or password does not match the demo account.",
@@ -281,6 +282,106 @@
     "light": "Light",
     "dark": "Dark",
     "saved": "The preference is saved in this browser."
+  },
+  "advisor": {
+    "role": "Advisor portal",
+    "nav": {
+      "clients": "Clients",
+      "quotes": "Quotes"
+    },
+    "context": {
+      "attending": "Assisting",
+      "view": "View record",
+      "close": "Close client context"
+    },
+    "dashboard": {
+      "eyebrow": "Assisted sales",
+      "title": "Advisor dashboard",
+      "subtitle": "Manage clients and quotes while keeping the right sales context.",
+      "clientsAttended": "Clients assisted",
+      "activeQuotes": "Active quotes",
+      "pendingConsent": "Pending consent",
+      "upcomingRenewals": "Upcoming renewals",
+      "recentQuotes": "Recent quotes",
+      "nextTitle": "Start with the client",
+      "nextBody": "Find the person, review their information, and open a quote with the correct context."
+    },
+    "clients": {
+      "eyebrow": "Client portfolio",
+      "title": "Clients",
+      "subtitle": "Search by name, document number, or email address.",
+      "find": "Find client",
+      "searchLabel": "Find client",
+      "searchPlaceholder": "Name, document, or email",
+      "search": "Search",
+      "clear": "Clear",
+      "loading": "Loading clients…",
+      "empty": "We could not find clients matching that information.",
+      "open": "Open record",
+      "renewal": "Next renewal",
+      "back": "Back to clients",
+      "loadingDetail": "Loading client record…",
+      "notFound": "We could not find this client.",
+      "record": "Client record",
+      "recordSubtitle": "Information needed to support the sale.",
+      "basicData": "Basic information",
+      "verifications": "Identity and consent",
+      "currentPolicies": "Current policies",
+      "recentQuotes": "Recent quotes",
+      "noPolicies": "This client has no current policies.",
+      "noQuotes": "This client has no recent quotes."
+    },
+    "kyc": {
+      "approved": "Verified",
+      "pending": "Pending",
+      "failed": "Review required"
+    },
+    "consent": {
+      "label": "Consent",
+      "recorded": "Recorded",
+      "pending": "Pending"
+    },
+    "quote": {
+      "eyebrow": "Assisted quote",
+      "title": "Travel insurance",
+      "subtitle": "Preparing a quote for {{name}}.",
+      "start": "New quote",
+      "tripTitle": "Trip details",
+      "tripBody": "Complete the same information used in the client portal.",
+      "compare": "Compare plans",
+      "plansTitle": "Plan comparison",
+      "choose": "Choose this plan",
+      "consentTitle": "Consent and save",
+      "consentBody": "Record whether the client has already provided authorization and save the offer.",
+      "consentNotice": "The advisor only records authorization provided directly by the client. The advisor cannot grant it on the client's behalf.",
+      "consentConfirmed": "The client directly confirmed consent.",
+      "consentConfirmedHint": "Select this only after receiving authorization from the client.",
+      "channel": "Confirmation channel",
+      "clientPortal": "Confirmation in the client portal",
+      "recordedCall": "Recorded call",
+      "save": "Save quote",
+      "saveError": "We could not save or update the quote.",
+      "summary": "Offer summary",
+      "savedEyebrow": "Quote recorded",
+      "savedTitle": "The offer was saved",
+      "savedBody": "Quote {{id}} keeps the associated advisor and client record.",
+      "continueSubscription": "Prepare subscription",
+      "sendToClient": "Hand off to client"
+    },
+    "quotes": {
+      "eyebrow": "Sales traceability",
+      "title": "Quote history",
+      "subtitle": "Review offers created through assisted sales.",
+      "viewAll": "View history",
+      "empty": "There are no assisted quotes yet.",
+      "audit": "Recorded by {{advisor}} for {{customer}}."
+    },
+    "status": {
+      "active": "Active",
+      "pendingConsent": "Pending consent",
+      "sentToClient": "Handed off to client",
+      "readyToSubscribe": "Ready for subscription"
+    }
   },
   "help": {
     "title": "How can we help?",
