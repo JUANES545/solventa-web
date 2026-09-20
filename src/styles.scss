@@ -11,12 +11,12 @@
   --color-surface-secondary: #e8eef6;
   --color-primary: #123b6d;
   --color-primary-hover: #0d2f58;
-  --color-conversion: #007a9e;
+  --color-conversion: #007fa3;
   --color-conversion-hover: #006780;
   --color-text: #0b1f3a;
   --color-text-secondary: #475569;
   --color-border: #64748b;
-  --color-border-soft: #d6deea;
+  --color-border-soft: #cbd5e1;
   --color-success: #047857;
   --color-warning: #a44708;
   --color-error: #b42318;
@@ -27,6 +27,17 @@
   --radius-sm: 10px;
   --radius-md: 16px;
   --radius-lg: 24px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 28px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
   @include mat.progress-spinner-overrides(
     (
       active-indicator-color: var(--color-primary),
@@ -328,7 +339,7 @@ app-theme-toggle {
 }
 
 .button {
-  min-height: 46px;
+  min-height: 48px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -380,14 +391,14 @@ app-theme-toggle {
   width: 100%;
 }
 .button.compact {
-  min-height: 40px;
+  min-height: 48px;
   padding: 0.45rem 0.8rem;
 }
 .text-button,
 .icon-button,
 .notification-button {
-  min-width: 44px;
-  min-height: 44px;
+  min-width: 48px;
+  min-height: 48px;
   border: 0;
   background: transparent;
   color: var(--color-text);
@@ -932,8 +943,7 @@ app-theme-toggle {
   background: color-mix(in srgb, var(--color-warning) 13%, var(--color-surface));
 }
 .status.expired,
-.status.rejected,
-.status.closed {
+.status.rejected {
   color: var(--color-error);
   background: color-mix(in srgb, var(--color-error) 12%, var(--color-surface));
 }
@@ -1641,7 +1651,7 @@ dd {
   flex-wrap: wrap;
 }
 .segmented button {
-  min-height: 44px;
+  min-height: 48px;
   padding: 0.55rem 0.9rem;
   border: 1px solid var(--color-border-soft);
   border-radius: var(--radius-sm);
@@ -1792,7 +1802,7 @@ dd {
 }
 .sidebar-action {
   width: 100%;
-  min-height: 46px;
+  min-height: 48px;
   display: grid;
   grid-template-columns: 30px 1fr;
   align-items: center;
@@ -2008,7 +2018,7 @@ dd {
 }
 .main-nav a,
 .sidebar-footer a {
-  min-height: 46px;
+  min-height: 48px;
   display: grid;
   grid-template-columns: 30px 1fr auto;
   align-items: center;
