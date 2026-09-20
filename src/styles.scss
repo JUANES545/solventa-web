@@ -21,6 +21,7 @@
   --color-warning: #a44708;
   --color-error: #b42318;
   --color-focus: #006f8f;
+  --brand-mark-letter: #ffffff;
   --shadow-card: 0 8px 28px rgb(18 59 109 / 8%);
   --shadow-depth: 0 24px 70px rgb(7 28 53 / 20%);
   --radius-sm: 10px;
@@ -50,6 +51,7 @@
   --color-warning: #f59e0b;
   --color-error: #ff8a80;
   --color-focus: #00d2ff;
+  --brand-mark-letter: #001018;
   --shadow-card: 0 12px 32px rgb(0 0 0 / 22%);
   --shadow-depth: 0 28px 80px rgb(0 0 0 / 42%);
 }
@@ -72,6 +74,7 @@
     --color-warning: #f59e0b;
     --color-error: #ff8a80;
     --color-focus: #00d2ff;
+    --brand-mark-letter: #001018;
     --shadow-card: 0 12px 32px rgb(0 0 0 / 22%);
     --shadow-depth: 0 28px 80px rgb(0 0 0 / 42%);
   }
@@ -277,20 +280,14 @@ app-theme-toggle {
 .brand-light {
   color: #fff;
 }
-.brand-mark {
-  display: inline-grid;
-  width: 36px;
-  height: 36px;
-  place-items: center;
-  border-radius: 11px;
-  background: var(--color-primary);
-  color: var(--color-background);
-  font-family: var(--font-body);
-  font-weight: 700;
+.brand app-brand-mark {
+  display: inline-flex;
+  flex: 0 0 auto;
+  color: var(--color-primary);
 }
-.brand-light .brand-mark {
-  background: #00d2ff;
-  color: #001018;
+.brand-light app-brand-mark {
+  color: #00d2ff;
+  --brand-mark-letter: #001018;
 }
 
 .public-shell {
@@ -647,17 +644,10 @@ app-theme-toggle {
   font-family: var(--font-display);
   font-weight: 600;
 }
-.policy-brand > span {
-  width: 25px;
-  height: 25px;
-  display: inline-grid;
-  place-items: center;
-  border-radius: 8px;
-  background: #0a93b4;
-  color: #fff;
-  font-family: var(--font-body);
-  font-size: 0.78rem;
-  font-weight: 750;
+.policy-brand app-brand-mark {
+  display: inline-flex;
+  color: #0a93b4;
+  --brand-mark-letter: #fff;
 }
 .mini-label,
 .policy-card-footer small {

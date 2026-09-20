@@ -52,6 +52,7 @@ Run `pnpm audit:a11y` while the development server is available at `http://local
 
 - [Week 6 delivery plan](docs/week-6-plan.md)
 - [Architecture](docs/architecture.md)
+- [Brand system](docs/brand-system.md)
 - [Evolution plan](docs/evolution-plan.md)
 - [Git workflow](docs/git-workflow.md)
 
