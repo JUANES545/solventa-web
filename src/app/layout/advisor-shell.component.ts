@@ -4,18 +4,25 @@ import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { AdvisorFacade } from '../core/advisor.facade';
 import { AppStore } from '../core/app-store.service';
 import { IconName, SvgIconComponent } from '../shared/svg-icon.component';
+import { BrandMarkComponent } from '../shared/brand-mark.component';
 
 @Component({
   selector: 'app-advisor-shell',
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, TranslocoPipe, SvgIconComponent],
+  imports: [
+    RouterOutlet,
+    RouterLink,
+    RouterLinkActive,
+    TranslocoPipe,
+    SvgIconComponent,
+    BrandMarkComponent,
+  ],
   template: `
     <a class="skip-link" href="#main-content">{{ 'nav.skip' | transloco }}</a>
     <div class="app-shell advisor-shell">
       <aside class="sidebar advisor-sidebar" [class.open]="menuOpen()">
         <div class="sidebar-header">
           <a class="brand brand-light" routerLink="/advisor/dashboard" (click)="closeMenu()"
-            ><span class="brand-mark" aria-hidden="true">S</span
-            ><span>{{ 'brand.name' | transloco }}</span></a
+            ><app-brand-mark /><span>{{ 'brand.name' | transloco }}</span></a
           >
           <button
             class="icon-button mobile-only"
