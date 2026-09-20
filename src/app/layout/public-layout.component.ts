@@ -2,17 +2,17 @@ import { Component, inject } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { TranslocoPipe, TranslocoService } from '@jsverse/transloco';
 import { ThemeService } from '../core/theme.service';
+import { BrandMarkComponent } from '../shared/brand-mark.component';
 
 @Component({
   selector: 'app-public-layout',
-  imports: [RouterOutlet, RouterLink, TranslocoPipe],
+  imports: [RouterOutlet, RouterLink, TranslocoPipe, BrandMarkComponent],
   template: `
     <a class="skip-link" href="#main-content">{{ 'nav.skip' | transloco }}</a>
     <div class="public-shell">
       <header class="public-header">
         <a class="brand" routerLink="/" aria-label="Solventa home"
-          ><span class="brand-mark" aria-hidden="true">S</span
-          ><span>{{ 'brand.name' | transloco }}</span></a
+          ><app-brand-mark /><span>{{ 'brand.name' | transloco }}</span></a
         >
         <nav class="header-actions" [attr.aria-label]="'nav.utilityLabel' | transloco">
           <button class="text-button" type="button" (click)="toggleLanguage()">

@@ -1,0 +1,31 @@
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+
+@Component({
+  selector: 'app-brand-mark',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  host: { 'aria-hidden': 'true' },
+  template: `
+    <svg
+      class="brand-symbol"
+      [attr.width]="size()"
+      [attr.height]="size()"
+      viewBox="0 0 24 24"
+      fill="none"
+      focusable="false"
+    >
+      <path
+        fill="currentColor"
+        d="M12 2.25 20 5.15v6.2c0 5.05-3.15 8.75-8 10.4-4.85-1.65-8-5.35-8-10.4v-6.2L12 2.25Z"
+      />
+      <path
+        d="M15.55 7.25c-.9-.78-2.12-1.2-3.5-1.2-2.15 0-3.55.95-3.55 2.35 0 1.55 1.4 2.12 3.55 2.65 2.1.52 3.45 1.15 3.45 2.7 0 1.5-1.45 2.55-3.65 2.55-1.5 0-2.85-.45-3.85-1.35"
+        stroke="var(--brand-mark-letter, #fff)"
+        stroke-width="2.35"
+        stroke-linecap="round"
+      />
+    </svg>
+  `,
+})
+export class BrandMarkComponent {
+  readonly size = input(36);
+}

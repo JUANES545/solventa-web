@@ -1,10 +1,11 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { TranslocoPipe } from '@jsverse/transloco';
 import { SvgIconComponent } from './svg-icon.component';
+import { BrandMarkComponent } from './brand-mark.component';
 
 @Component({
   selector: 'app-policy-card-visual',
-  imports: [TranslocoPipe, SvgIconComponent],
+  imports: [TranslocoPipe, SvgIconComponent, BrandMarkComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div
@@ -19,7 +20,7 @@ import { SvgIconComponent } from './svg-icon.component';
         [style.--tilt-y]="tiltY() + 'deg'"
       >
         <div class="policy-card-topline">
-          <span class="policy-brand"><span>S</span> Solventa</span>
+          <span class="policy-brand"><app-brand-mark [size]="25" /> Solventa</span>
           <app-icon name="shield" [size]="23" />
         </div>
         <span class="mini-label">SOL-TRV-2026-1842</span>
